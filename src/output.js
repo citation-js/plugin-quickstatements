@@ -1,5 +1,7 @@
 export default {
-  record (csl) {
-    // ...
+  quickstatements (csl) {
+    var data = csl[0];
+    var output = '';
+    return(output)
   }
 }
