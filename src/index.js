@@ -1,10 +1,11 @@
-/**
- * @module input/bibjson
- */
-
 import { plugins } from '@citation-js/core'
-import { ref, formats as input } from './input'
-import output from './output'
-import config from './config'
 
-plugins.add(ref, { input, output, config })
+// Loads plugin definitions
+import output from './output'
+
+// Define plugin name (this is how it is referenced in the code)
+const ref = '@quickstatements'
+
+// Registers the plugin
+// docs: https://citation.js.org/api/tutorial-plugins.html
+plugins.add(ref, { output })
