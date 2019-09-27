@@ -8,7 +8,7 @@ import { plugins } from '@citation-js/core'
 const apiTests = [
   {
     name: 'simple',
-    output: '\tCREATE\n\n\tLAST\tP31\tQxx\n',
+    output: '\tCREATE\n\n\tLAST\tP31\tQ13442814\n',
     input: [{ publisher: 'Springer Nature',
   issue: '1',
   license:
