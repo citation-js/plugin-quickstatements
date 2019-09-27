@@ -45,7 +45,8 @@
   "dependencies": {
     "@citation-js/date": "^0.4.4",
     "@citation-js/name": "^0.4.2",
-    "@citation-js/plugin-pubmed": "^0.1.1"
+    "@citation-js/plugin-pubmed": "^0.1.1",
+    "wikidata-sdk": "^7.0.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
