@@ -12,6 +12,10 @@ export default {
         }
         if (item.PMID) output = output + '\tLAST\tP698\t\"' + item.PMID + '\"\n';
         if (item.PMCID) output = output + '\tLAST\tP932\t\"' + item.PMCID + '\"\n';
+        if (item.volume) output = output + '\tLAST\tP478\t\"' + item.volume + '\"\n';
+        if (item.issue) output = output + '\tLAST\tP433\t\"' + item.issue + '\"\n';
+        if (item.page) output = output + '\tLAST\tP304\t\"' +
+                         item.page.replace('--','-') + '\"\n';
       }
     }
     return output
