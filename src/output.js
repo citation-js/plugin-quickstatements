@@ -1,4 +1,5 @@
 import { format as formatDate } from '@citation-js/date'
+import { format as formatName } from '@citation-js/name'
 
 const props = {
   Len: 'title',
@@ -11,6 +12,7 @@ const props = {
   P698: 'PMID',
   P932: 'PMCID',
   P1476: 'title',
+  P2093: 'author'
 }
 
 function serialize (prop, value) {
@@ -19,6 +21,11 @@ function serialize (prop, value) {
       return value.replace('--', '-')
     case 'issued':
       return formatDate(value)
+    case 'author':
+      return value.map((author, index) => {
+        const name = formatName(author)
+        return name ? `${name}"\tP1545\t"${index + 1}` : undefined
+      })
 
     default: return value
   }
@@ -41,19 +48,10 @@ export default {
 
           if (serializedValue == null) continue
 
-          output += `\tLAST\t${wd}\t"${serializedValue}"\n`
-        }
-        if (item.author) {
-          for (var auCounter = 0; auCounter < item.author.length; auCounter++) {
-            var author = item.author[auCounter];
-            var name = "";
-            if (author.given) name = name + author.given + ' ';
-            if (author.family) name = name + author.family + ' ';
-            if (name.trim().length > 0) {
-              output = output + '\tLAST\tP2093\t\"' + name.trim() +
-                '\"\tP1545\t\"' + (auCounter+1) + '\"\t\n';
-            }
-          }
+          output += []
+            .concat(serializedValue)
+            .map(value => `\tLAST\t${wd}\t"${value}"\n`)
+            .join('')
         }
       }
     }
