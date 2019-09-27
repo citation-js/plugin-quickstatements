@@ -1,3 +1,5 @@
+let {format} = require('@citation-js/date')
+
 const props = {
   Len: 'title',
 
@@ -7,13 +9,16 @@ const props = {
   P478: 'volume',
   P698: 'PMID',
   P932: 'PMCID',
-  P1476: 'title'
+  P1476: 'title',
+  P577: 'issued'
 }
 
 function serialize (prop, value) {
   switch (prop) {
     case 'page':
       return value.replace('--', '-')
+    case 'issued':
+      return format(value)
 
     default: return value
   }
@@ -38,6 +43,18 @@ export default {
           if (serializedValue == null) continue
 
           output += `\tLAST\t${wd}\t"${serializedValue}"\n`
+        }
+        if (item.author) {
+          for (var auCounter = 0; auCounter < item.author.length; auCounter++) {
+            var author = item.author[auCounter];
+            var name = "";
+            if (author.given) name = name + author.given + ' ';
+            if (author.family) name = name + author.family + ' ';
+            if (name.trim().length > 0) {
+              output = output + '\tLAST\tP2093\t\"' + name.trim() +
+                '\"\tP1545\t\"' + (auCounter+1) + '\"\t\n';
+            }
+          }
         }
       }
     }
