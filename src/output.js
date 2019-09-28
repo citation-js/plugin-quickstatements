@@ -48,7 +48,7 @@ function serialize (prop, value, wd) {
     case 'issued':
       return `"${formatDate(value)}"`
     case 'author':
-      if (wd === "P50") {
+      if (wd === 'P50') {
         return value.map((author, index) => {
           let orcid = author.ORCID
           if (orcid) {
@@ -69,7 +69,7 @@ function serialize (prop, value, wd) {
               return undefined
             } else {
               const name = formatName(author)
-              return name ? `"${name}"\tP496\t"${orcid}\"\tP1545\t"${index + 1}"` : undefined
+              return name ? `"${name}"\tP496\t"${orcid}"\tP1545\t"${index + 1}"` : undefined
             }
           } else {
             const name = formatName(author)
@@ -111,25 +111,25 @@ export default {
     // generate output
     let output = ''
     for (const item of csl) {
-      var prov = "";
+      var prov = ''
       if (item.source) {
         if (item.source === 'PubMed') {
-          prov = prov + "\tS248\tQ180686"
+          prov = prov + '\tS248\tQ180686'
         } else if (item.source === 'Crossref') {
-          prov = prov + "\tS248\tQ5188229"
+          prov = prov + '\tS248\tQ5188229'
         }
         if (item.accessed) {
           prov = prov + `\tS813\t"` + formatDate(item.accessed) + `T00:00:00Z/9"`
         } else {
           prov = prov + `\tS813\t"` + new Date().toISOString() + `/18"`
         }
-        if (item._graph && item._graph[0] && item._graph[0].type === "@pubmed/pmcid" && item._graph[0].data) {
+        if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item._graph[0].data) {
           prov = prov + `\tS932\t"` + item._graph[0].data + `"`
           // FIXME: if data is a list
         }
       }
       if (item.type === 'article-journal') {
-        output = output + '\tCREATE\n\n\tLAST\tP31\tQ13442814' + prov + '\n';
+        output = output + '\tCREATE\n\n\tLAST\tP31\tQ13442814' + prov + '\n'
         output = output + `\tLAST\tLen\t"` + item.title + `"\n`
 
         for (const wd in props) {
@@ -147,7 +147,7 @@ export default {
             .map(value => `\tLAST\t${wd}\t${value}${prov}\n`)
             .join('')
         }
-        output = output + "\n"
+        output = output + '\n'
       }
     }
     return output
