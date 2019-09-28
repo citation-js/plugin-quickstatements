@@ -25,11 +25,16 @@ identifier:
 ```javascript
 c = require('@citation-js/core')
 require('@citation-js/plugin-pubmed')
+require('@citation-js/plugin-doi')
 
 require('@babel/register')
 require('./src')
 
-c.Cite.async('PMC6613236')
+c.Cite.async([
+  '10.1186/s13321-019-0380-5',
+  'pmid:14266813',
+  'PMC6613236'
+])
   .then(Cite =>
     console.log(Cite.format('quickstatements'))
   )
