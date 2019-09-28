@@ -10,20 +10,7 @@ const caches = {
       .filter((value, index, array) => array.indexOf(value) === index)
       .join('" "')
 
-    const query = `SELECT ?journal ?issn WHERE {
-      VALUES ?issn { "${issns}" } .
-      ?journal wdt:P236 ?issn
-    }`
-
-    const url = wdk.sparqlQuery(query)
-    const response = util.fetchFile(url)
-    const results = JSON.parse(response)
-    const simpleResults = wdk.simplify.sparqlResults(results)
-
-    return simpleResults.reduce((cache, { journal, issn }) => {
-      cache[issn] = journal
-      return cache
-    }, {})
+    return `VALUES ?key { "${issns}" } . ?value wdt:P236 ?key .`
   }
 }
 
@@ -63,13 +50,25 @@ function serialize (prop, value) {
 export default {
   quickstatements (csl) {
     // fill caches
-    for (const cache in caches) {
-      try {
-        caches[cache] = caches[cache](csl)
-      } catch (e) {
+    const queries = Object.keys(caches)
+      .map(cache => {
+        const makeQuery = caches[cache]
         caches[cache] = {}
-        console.error(e)
+        return `{ ${makeQuery(csl)} BIND("${cache}" AS ?cache) }`
+      })
+      .join(' UNION ')
+    let query = `SELECT ?key ?value ?cache WHERE { ${queries} }`
+
+    try {
+      const url = wdk.sparqlQuery(query)
+      const response = JSON.parse(util.fetchFile(url))
+      const results = wdk.simplify.sparqlResults(response)
+
+      for (let { key, value, cache } of results) {
+        caches[cache][key] = value
       }
+    } catch (e) {
+      console.error(e)
     }
 
     // generate output
@@ -92,7 +91,6 @@ export default {
             .concat(serializedValue)
             .map(value => `\tLAST\t${wd}\t${value}\n`)
             .join('')
-
         }
       }
     }
