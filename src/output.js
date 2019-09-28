@@ -11,15 +11,29 @@ const caches = {
       .join('" "')
 
     return `VALUES ?key { "${issns}" } . ?value wdt:P236 ?key .`
+  },
+  orcid (items) {
+    const orcids = []
+      .concat(...items.map(
+        item => item.author.map(
+          author => author.ORCID && author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
+        )
+      ))
+      .filter((value, index, array) => value && array.indexOf(value) === index)
+      .join('" "')
+
+    return `VALUES ?key { "${orcids}" } . ?value wdt:P496 ?key .`
   }
 }
 
 const props = {
+  P50: 'author',
   P304: 'page',
   P356: 'DOI',
   P433: 'issue',
   P478: 'volume',
   P577: 'issued',
+  P496: 'ORCID',
   P698: 'PMID',
   P932: 'PMCID',
   P1433: 'ISSN',
@@ -27,17 +41,42 @@ const props = {
   P2093: 'author'
 }
 
-function serialize (prop, value) {
+function serialize (prop, value, wd) {
   switch (prop) {
     case 'page':
       return `"${value.replace('--', '-')}"`
     case 'issued':
       return `"${formatDate(value)}"`
     case 'author':
-      return value.map((author, index) => {
-        const name = formatName(author)
-        return name ? `"${name}"\tP1545\t"${index + 1}"` : undefined
-      })
+      if (wd === "P50") {
+        return value.map((author, index) => {
+          let orcid = author.ORCID
+          if (orcid) {
+            orcid = orcid.replace(/^https?:\/\/orcid\.org\//, '')
+            let authorQID = caches.orcid[orcid]
+            if (authorQID) {
+              const name = formatName(author)
+              return name ? `${authorQID}\tP1932\t"${name}"\tP1545\t"${index + 1}"` : `${authorQID}\tP1545\t"${index + 1}"`
+            }
+          }
+        }).filter(Boolean)
+      } else {
+        return value.map((author, index) => {
+          if (author.ORCID) {
+            let orcid = author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
+            let authorQID = caches.orcid[orcid]
+            if (authorQID) {
+              return undefined
+            } else {
+              const name = formatName(author)
+              return name ? `"${name}"\tP496\t"${orcid}\"\tP1545\t"${index + 1}"` : undefined
+            }
+          } else {
+            const name = formatName(author)
+            return name ? `"${name}"\tP1545\t"${index + 1}"` : undefined
+          }
+        }).filter(Boolean)
+      }
     case 'ISSN':
       return caches.issn[value]
 
@@ -99,7 +138,7 @@ export default {
 
           if (value == null) continue
 
-          const serializedValue = serialize(prop, value)
+          const serializedValue = serialize(prop, value, wd)
 
           if (serializedValue == null) continue
 
