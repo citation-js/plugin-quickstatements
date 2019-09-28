@@ -1,6 +1,6 @@
 {
   "name": "@egonw/plugin-quickstatements",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Plugin that takes citation-js input and output QuickStatements.",
   "main": "lib/index.js",
   "scripts": {
@@ -16,7 +16,9 @@
     "type": "git",
     "url": "git://github.com/egonw/plugin-quickstatements.git"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "keywords": [
     "Wikidata",
     "QuickStatements"
