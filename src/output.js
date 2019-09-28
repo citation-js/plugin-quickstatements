@@ -3,6 +3,17 @@ import { format as formatName } from '@citation-js/name'
 import { util } from '@citation-js/core'
 import wdk from 'wikidata-sdk'
 
+const caches = {
+  issn (items) {
+    const issns = items
+      .map(item => item.ISSN)
+      .filter((value, index, array) => array.indexOf(value) === index)
+      .join('" "')
+
+    return `VALUES ?key { "${issns}" } . ?value wdt:P236 ?key .`
+  }
+}
+
 const props = {
   Len: 'title',
 
@@ -13,6 +24,7 @@ const props = {
   P577: 'issued',
   P698: 'PMID',
   P932: 'PMCID',
+  P1433: 'ISSN',
   P1476: 'title',
   P2093: 'author'
 }
@@ -20,21 +32,46 @@ const props = {
 function serialize (prop, value) {
   switch (prop) {
     case 'page':
-      return value.replace('--', '-')
+      return `"${value.replace('--', '-')}"`
     case 'issued':
-      return formatDate(value)
+      return `"${formatDate(value)}"`
     case 'author':
       return value.map((author, index) => {
         const name = formatName(author)
-        return name ? `${name}"\tP1545\t"${index + 1}` : undefined
+        return name ? `"${name}"\tP1545\t"${index + 1}"` : undefined
       })
+    case 'ISSN':
+      return caches.issn[value]
 
-    default: return value
+    default: return `"${value}"`
   }
 }
 
 export default {
   quickstatements (csl) {
+    // fill caches
+    const queries = Object.keys(caches)
+      .map(cache => {
+        const makeQuery = caches[cache]
+        caches[cache] = {}
+        return `{ ${makeQuery(csl)} BIND("${cache}" AS ?cache) }`
+      })
+      .join(' UNION ')
+    let query = `SELECT ?key ?value ?cache WHERE { ${queries} }`
+
+    try {
+      const url = wdk.sparqlQuery(query)
+      const response = JSON.parse(util.fetchFile(url))
+      const results = wdk.simplify.sparqlResults(response)
+
+      for (let { key, value, cache } of results) {
+        caches[cache][key] = value
+      }
+    } catch (e) {
+      console.error(e)
+    }
+
+    // generate output
     let output = ''
     for (const item of csl) {
       var prov = "";
@@ -62,27 +99,8 @@ export default {
 
           output += []
             .concat(serializedValue)
-            .map(value => `\tLAST\t${wd}\t"${value}"${prov}\n`)
+            .map(value => `\tLAST\t${wd}\t${value}${prov}\n`)
             .join('')
-
-        }
-
-        // fetch the Wikidata QID for the journal
-        if (item.ISSN) {
-          var query = "SELECT ?journal WHERE { ?journal wdt:P236 \"" + item.ISSN + "\"} limit 10"
-          var url = wdk.sparqlQuery(query)
-
-          try {
-            var response = util.fetchFile(url)
-            const results = JSON.parse(response)
-            const simpleResults = wdk.simplify.sparqlResults(results)
-
-            if (simpleResults[0] && simpleResults[0].journal)
-              output = output + "\tLAST\tP1433\t" + simpleResults[0].journal + prov + "\n"
-          } catch (e) {
-            console.error(e)
-            console.error(e.body.toString())
-          }
         }
       }
     }
