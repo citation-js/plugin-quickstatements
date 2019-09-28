@@ -73,13 +73,20 @@ export default {
     let output = ''
     for (const item of csl) {
       var prov = "";
-      if (item.source === 'PubMed') {
-        prov = prov + "\tS248\tQ180686"
+      if (item.source) {
+        if (item.source === 'PubMed') {
+          prov = prov + "\tS248\tQ180686"
+        } else if (item.source === 'Crossref') {
+          prov = prov + "\tS248\tQ5188229"
+        }
         if (item.accessed) {
-            prov = prov + `\tS813\t"` + formatDate(item.accessed) + `T00:00:00Z/9"`
+          prov = prov + `\tS813\t"` + formatDate(item.accessed) + `T00:00:00Z/9"`
+        } else {
+          prov = prov + `\tS813\t"` + new Date().toISOString() + `/18"`
         }
         if (item._graph && item._graph[0] && item._graph[0].type === "@pubmed/pmcid" && item._graph[0].data) {
-            prov = prov + `\tS932\t"` + item._graph[0].data + `"`
+          prov = prov + `\tS932\t"` + item._graph[0].data + `"`
+          // FIXME: if data is a list
         }
       }
       if (item.type === 'article-journal') {
