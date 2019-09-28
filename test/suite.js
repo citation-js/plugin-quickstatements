@@ -19,6 +19,7 @@ global.Date = class extends oldDate {
 const apiTests = [
   {
     name: 'simple',
+    /* eslint-disable no-tabs */
     output: `	CREATE
 
 	LAST	P31	Q13442814	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
@@ -35,6 +36,7 @@ const apiTests = [
 	LAST	P2093	"B. Angélica Pilón-Jiménez"	P496	"0000-0002-0305-3138"	P1545	"2"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
 
 `,
+    /* eslint-enable no-tabs */
     input: [require('./data.json')]
   }
 ]
