@@ -102,6 +102,7 @@ export default {
             .map(value => `\tLAST\t${wd}\t${value}${prov}\n`)
             .join('')
         }
+        output = output + "\n"
       }
     }
     return output
