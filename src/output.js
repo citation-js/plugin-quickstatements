@@ -1,5 +1,7 @@
 import { format as formatDate } from '@citation-js/date'
 import { format as formatName } from '@citation-js/name'
+import { util } from '@citation-js/core'
+import wdk from 'wikidata-sdk'
 
 const props = {
   Len: 'title',
@@ -52,6 +54,25 @@ export default {
             .concat(serializedValue)
             .map(value => `\tLAST\t${wd}\t"${value}"\n`)
             .join('')
+
+        }
+
+        // fetch the Wikidata QID for the journal
+        if (item.ISSN) {
+          var query = "SELECT ?journal WHERE { ?journal wdt:P236 \"" + item.ISSN + "\"} limit 10"
+          var url = wdk.sparqlQuery(query)
+
+          try {
+            var response = util.fetchFile(url)
+            const results = JSON.parse(response)
+            const simpleResults = wdk.simplify.sparqlResults(results)
+
+            if (simpleResults[0] && simpleResults[0].journal)
+              output = output + "\tLAST\tP1433\t" + simpleResults[0].journal + "\n"
+          } catch (e) {
+            console.error(e)
+            console.error(e.body.toString())
+          }
         }
       }
     }
