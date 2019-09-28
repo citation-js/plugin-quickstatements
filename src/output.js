@@ -15,8 +15,6 @@ const caches = {
 }
 
 const props = {
-  Len: 'title',
-
   P304: 'page',
   P356: 'DOI',
   P433: 'issue',
@@ -86,6 +84,7 @@ export default {
       }
       if (item.type === 'article-journal') {
         output = output + '\tCREATE\n\n\tLAST\tP31\tQ13442814' + prov + '\n';
+        output = output + `\tLAST\tLen\t"` + item.title + `"\n`
 
         for (const wd in props) {
           const prop = props[wd]
