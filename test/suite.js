@@ -5,65 +5,37 @@ import '../src/'
 import assert from 'assert'
 import { plugins } from '@citation-js/core'
 
+const oldDate = global.Date
+global.Date = class extends oldDate {
+  constructor (...args) {
+    if (args.length) {
+      super(...args)
+    } else {
+      super('2019-09-28T17:31:16.055Z')
+    }
+  }
+}
+
 const apiTests = [
   {
     name: 'simple',
-    output: '\tCREATE\n\n\tLAST\tP31\tQ13442814\n',
-    input: [{ publisher: 'Springer Nature',
-      issue: '1',
-      license:
-   [ { URL: 'http://creativecommons.org/licenses/by/4.0',
-     start: [Object],
-     'delay-in-days': 0,
-     'content-version': 'unspecified' } ],
-      DOI: '10.1186/s13326-015-0005-5',
-      type: 'article-journal',
-      title:
-   'eNanoMapper: harnessing ontologies to enable data integration for nanomaterial risk assessment',
-      prefix: '10.1186',
-      volume: '6',
-      author:
-   [ { given: 'Janna',
-     family: 'Hastings',
-     sequence: 'first',
-     affiliation: [] },
-   { given: 'Nina',
-     family: 'Jeliazkova',
-     sequence: 'additional',
-     affiliation: [] },
-   { given: 'Gareth',
-     family: 'Owen',
-     sequence: 'additional',
-     affiliation: [] },
-   { given: 'Georgia',
-     family: 'Tsiliki',
-     sequence: 'additional',
-     affiliation: [] },
-   { given: 'Cristian R',
-     family: 'Munteanu',
-     sequence: 'additional',
-     affiliation: [] },
-   { given: 'Christoph',
-     family: 'Steinbeck',
-     sequence: 'additional',
-     affiliation: [] },
-   { given: 'Egon',
-     family: 'Willighagen',
-     sequence: 'additional',
-     affiliation: [] } ],
-      'published-online': { 'date-parts': [ [Array] ] },
-      'container-title': 'Journal of Biomedical Semantics',
-      'original-title': [],
-      language: 'en',
-      'journal-issue': { 'published-print': { 'date-parts': [Array] }, issue: '1' },
-      'alternative-id': [ '5' ],
-      URL: 'http://dx.doi.org/10.1186/s13326-015-0005-5',
-      ISSN: [ '2041-1480' ],
-      'container-title-short': 'J Biomed Semant',
-      'article-number': '10'
+    output: `	CREATE
 
-    }
-    ]
+	LAST	P31	Q13442814	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	Len	"A general approach for retrosynthetic molecular core analysis"
+	LAST	P50	Q58379284	P1932	"J. Jesús Naveja"	P1545	"1"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	P50	Q18609784	P1932	"Jürgen Bajorath"	P1545	"3"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	P50	Q43370888	P1932	"José L. Medina-Franco"	P1545	"4"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	P356	"10.1186/s13321-019-0380-5"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	P433	"1"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	P478	"11"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	P577	"2019-09-24"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	P1433	Q6294930	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	P1476	"A general approach for retrosynthetic molecular core analysis"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+	LAST	P2093	"B. Angélica Pilón-Jiménez"	P496	"0000-0002-0305-3138"	P1545	"2"	S248	Q5188229	S813	"2019-09-28T17:31:16.055Z/18"
+
+`,
+    input: [require('./data.json')]
   }
 ]
 
