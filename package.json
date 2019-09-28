@@ -1,5 +1,5 @@
 {
-  "name": "@citation-js/plugin-quickstatements",
+  "name": "@egonw/plugin-quickstatements",
   "version": "0.1.0",
   "description": "Plugin that takes citation-js input and output QuickStatements.",
   "main": "lib/index.js",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/citation-js/plugin-quickstatements.git"
+    "url": "git://github.com/egonw/plugin-quickstatements.git"
   },
   "keywords": [
     "Wikidata",
@@ -23,9 +23,9 @@
   "author": "Egon Willighagen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/citation-js/plugin-quickstatements/issues"
+    "url": "https://github.com/egonw/plugin-quickstatements/issues"
   },
-  "homepage": "https://github.com/citation-js/plugin-quickstatements#readme",
+  "homepage": "https://github.com/egonw/plugin-quickstatements#readme",
   "engines": {
     "node": ">=8"
   },
