@@ -74,8 +74,18 @@ export default {
     // generate output
     let output = ''
     for (const item of csl) {
+      var prov = "";
+      if (item.source === 'PubMed') {
+        prov = prov + "\tS248\tQ180686"
+        if (item.accessed) {
+            prov = prov + `\tS813\t"` + formatDate(item.accessed) + `T00:00:00Z/9"`
+        }
+        if (item._graph && item._graph[0] && item._graph[0].type === "@pubmed/pmcid" && item._graph[0].data) {
+            prov = prov + `\tS932\t"` + item._graph[0].data + `"`
+        }
+      }
       if (item.type === 'article-journal') {
-        output = output + '\tCREATE\n\n\tLAST\tP31\tQ13442814\n';
+        output = output + '\tCREATE\n\n\tLAST\tP31\tQ13442814' + prov + '\n';
 
         for (const wd in props) {
           const prop = props[wd]
@@ -89,7 +99,7 @@ export default {
 
           output += []
             .concat(serializedValue)
-            .map(value => `\tLAST\t${wd}\t${value}\n`)
+            .map(value => `\tLAST\t${wd}\t${value}${prov}\n`)
             .join('')
         }
       }
