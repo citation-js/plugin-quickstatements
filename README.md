@@ -1,7 +1,15 @@
 ## Install
 
-```js
-npm install @citation-js/plugin-quickstatements
+Add the following line to your `~/.npmrc`:
+
+```
+@egonw:registry=https://npm.pkg.github.com
+```
+
+And then run:
+
+```shell
+npm install @egonw/plugin-quickstatements
 ```
 
 ## Use
