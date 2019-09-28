@@ -16,6 +16,7 @@
     "type": "git",
     "url": "git://github.com/egonw/plugin-quickstatements.git"
   },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "keywords": [
     "Wikidata",
     "QuickStatements"
