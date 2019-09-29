@@ -12,6 +12,18 @@ And then run:
 npm install @egonw/plugin-quickstatements
 ```
 
+To run the below example, you also need to install a few other packages
+(as they are currently not automatically pulled in, it seems):
+
+```shell
+npm install @citation-js/core
+npm install @citation-js/plugin-pubmed
+npm install @citation-js/plugin-doi
+npm install @babel/register
+npm install @babel/core
+```
+
+
 ## Use
 
 Install the plugin by `require`-ing it:
