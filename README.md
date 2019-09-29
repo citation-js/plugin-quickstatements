@@ -73,8 +73,8 @@ c.Cite.async([
 
 ### Output
 
-The output is [QuickStatements]() to be copied
-into the [online webservice](). The output
+The output is [QuickStatements](https://www.wikidata.org/wiki/Help:QuickStatements) to be copied
+into the [online webservice](https://tools.wmflabs.org/quickstatements/). The output
 looks like:
 
 ```
