@@ -1,3 +1,13 @@
+# Citation.js QuickStatements plugin
+
+This npm package is a plugin to citation.js
+([see this article](https://peerj.com/articles/cs-214/)) that outputs bibliographic information
+to [Wikidata QuickStatements](https://tools.wmflabs.org/quickstatements/). Some important points:
+
+1. it does *not* (currently) check if the information is already in Wikidata
+2. it only supports journals articles (at this moment)
+
+
 ## Install
 
 Add the following line to your `~/.npmrc`:
