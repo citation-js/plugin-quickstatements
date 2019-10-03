@@ -61,7 +61,7 @@ const bookProps = {
   P2093: 'author'
 }
 
-function formatDateForWikidata(dateStr) {
+function formatDateForWikidata (dateStr) {
   let isoDate = formatDate(dateStr)
   switch (isoDate.length) {
     case 4:
@@ -161,7 +161,7 @@ export default {
         if (item.accessed) {
           prov = prov + `\tS813\t` + formatDateForWikidata(item.accessed)
         } else {
-          prov = prov + `\tS813\t+` + new Date().toISOString().substring(0,10) + `T00:00:00Z/11`
+          prov = prov + `\tS813\t+` + new Date().toISOString().substring(0, 10) + `T00:00:00Z/11`
         }
         if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item._graph[0].data) {
           prov = prov + `\tS932\t"` + item._graph[0].data + `"`
@@ -208,8 +208,7 @@ export default {
             .join('')
         }
         output = output + '\n'
-
-    }
+      }
     }
     return output
   }
