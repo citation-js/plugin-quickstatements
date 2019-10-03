@@ -65,11 +65,11 @@ function formatDateForWikidata (dateStr) {
   let isoDate = formatDate(dateStr)
   switch (isoDate.length) {
     case 4:
-      return `+` + isoDate + `-01-01T00:00:00Z\/9`
+      return `+` + isoDate + `-01-01T00:00:00Z/9`
     case 7:
-      return `+` + isoDate + `-01T00:00:00Z\/10`
+      return `+` + isoDate + `-01T00:00:00Z/10`
     case 10:
-      return `+` + isoDate + `T00:00:00Z\/11`
+      return `+` + isoDate + `T00:00:00Z/11`
 
     default: return `+` + dateStr
   }
