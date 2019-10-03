@@ -65,11 +65,11 @@ function formatDateForWikidata(dateStr) {
   let isoDate = formatDate(dateStr)
   switch (isoDate.length) {
     case 4:
-      return `+` + isoDate + `-01-01T00:00:00Z\/4`
+      return `+` + isoDate + `-01-01T00:00:00Z\/9`
     case 7:
-      return `+` + isoDate + `-01T00:00:00Z\/7`
+      return `+` + isoDate + `-01T00:00:00Z\/10`
     case 10:
-      return `+` + isoDate + `T00:00:00Z\/10`
+      return `+` + isoDate + `T00:00:00Z\/11`
 
     default: return `+` + dateStr
   }
@@ -161,7 +161,7 @@ export default {
         if (item.accessed) {
           prov = prov + `\tS813\t` + formatDateForWikidata(item.accessed)
         } else {
-          prov = prov + `\tS813\t` + new Date().toISOString() + `/18`
+          prov = prov + `\tS813\t+` + new Date().toISOString().substring(0,10) + `T00:00:00Z/11`
         }
         if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item._graph[0].data) {
           prov = prov + `\tS932\t"` + item._graph[0].data + `"`
