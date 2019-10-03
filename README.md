@@ -71,6 +71,24 @@ c.Cite.async([
   .catch(console.error)
 ```
 
+Or for book ISBN numbers:
+
+```javascript
+const c = require('@citation-js/core')
+require('@citation-js/plugin-isbn')
+
+require('@babel/register')
+require('./src')
+
+c.Cite.async([
+  '978-0956775016'
+])
+  .then(Cite =>
+    console.log(Cite.format('quickstatements'))
+  )
+  .catch(console.error)
+```
+
 ### Output
 
 The output is [QuickStatements](https://www.wikidata.org/wiki/Help:QuickStatements) to be copied

@@ -23,6 +23,16 @@ const caches = {
       .join('" "')
 
     return `VALUES ?key { "${orcids}" } . ?value wdt:P496 ?key .`
+  },
+  language (items) {
+    const languages = []
+      .concat(...items.map(
+        item => item.language
+      ))
+      .filter((value, index, array) => value && array.indexOf(value) === index)
+      .join('" "')
+
+    return `VALUES ?key { "${languages}" } . ?value wdt:P218 ?key .`
   }
 }
 
@@ -37,6 +47,16 @@ const props = {
   P698: 'PMID',
   P932: 'PMCID',
   P1433: 'ISSN',
+  P1476: 'title',
+  P2093: 'author'
+}
+
+const bookProps = {
+  P50: 'author',
+  P212: 'ISBN',
+  P407: 'language',
+  P577: 'issued',
+  P1104: 'number-of-pages',
   P1476: 'title',
   P2093: 'author'
 }
@@ -79,6 +99,8 @@ function serialize (prop, value, wd) {
       }
     case 'ISSN':
       return caches.issn[value]
+    case 'language':
+      return caches.language[value]
 
     default: return `"${value}"`
   }
@@ -148,7 +170,28 @@ export default {
             .join('')
         }
         output = output + '\n'
-      }
+      } else if (item.type === 'book') {
+        output = output + '\tCREATE\n\n\tLAST\tP31\tQ3331189' + prov + '\n'
+        output = output + `\tLAST\tLen\t"` + item.title + `"\n`
+
+        for (const wd in bookProps) {
+          const prop = bookProps[wd]
+          const value = item[prop]
+
+          if (value == null) continue
+
+          const serializedValue = serialize(prop, value, wd)
+
+          if (serializedValue == null) continue
+
+          output += []
+            .concat(serializedValue)
+            .map(value => `\tLAST\t${wd}\t${value}${prov}\n`)
+            .join('')
+        }
+        output = output + '\n'
+
+    }
     }
     return output
   }
