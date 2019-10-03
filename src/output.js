@@ -61,12 +61,26 @@ const bookProps = {
   P2093: 'author'
 }
 
+function formatDateForWikidata(dateStr) {
+  let isoDate = formatDate(dateStr)
+  switch (isoDate.length) {
+    case 4:
+      return isoDate + `-00-00T00:00:00Z/4"`
+    case 7:
+      return isoDate + `-00T00:00:00Z/7"`
+    case 10:
+      return isoDate + `T00:00:00Z/10"`
+
+    default: return dateStr
+  }
+}
+
 function serialize (prop, value, wd) {
   switch (prop) {
     case 'page':
       return `"${value.replace('--', '-')}"`
     case 'issued':
-      return `"${formatDate(value)}"`
+      return `"${formatDateForWikidata(value)}"`
     case 'author':
       if (wd === 'P50') {
         return value.map((author, index) => {
@@ -141,7 +155,7 @@ export default {
           prov = prov + '\tS248\tQ5188229'
         }
         if (item.accessed) {
-          prov = prov + `\tS813\t"` + formatDate(item.accessed) + `T00:00:00Z/9"`
+          prov = prov + `\tS813\t"` + formatDateForWikidata(item.accessed)
         } else {
           prov = prov + `\tS813\t"` + new Date().toISOString() + `/18"`
         }
