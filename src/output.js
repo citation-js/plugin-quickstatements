@@ -65,13 +65,13 @@ function formatDateForWikidata(dateStr) {
   let isoDate = formatDate(dateStr)
   switch (isoDate.length) {
     case 4:
-      return isoDate + `-00-00T00:00:00Z/4"`
+      return `+` + isoDate + `-01-01T00:00:00Z\/4`
     case 7:
-      return isoDate + `-00T00:00:00Z/7"`
+      return `+` + isoDate + `-01T00:00:00Z\/7`
     case 10:
-      return isoDate + `T00:00:00Z/10"`
+      return `+` + isoDate + `T00:00:00Z\/10`
 
-    default: return dateStr
+    default: return `+` + dateStr
   }
 }
 
@@ -80,7 +80,7 @@ function serialize (prop, value, wd) {
     case 'page':
       return `"${value.replace('--', '-')}"`
     case 'issued':
-      return `"${formatDateForWikidata(value)}"`
+      return `${formatDateForWikidata(value)}`
     case 'author':
       if (wd === 'P50') {
         return value.map((author, index) => {
@@ -155,9 +155,9 @@ export default {
           prov = prov + '\tS248\tQ5188229'
         }
         if (item.accessed) {
-          prov = prov + `\tS813\t"` + formatDateForWikidata(item.accessed)
+          prov = prov + `\tS813\t` + formatDateForWikidata(item.accessed)
         } else {
-          prov = prov + `\tS813\t"` + new Date().toISOString() + `/18"`
+          prov = prov + `\tS813\t` + new Date().toISOString() + `/18`
         }
         if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item._graph[0].data) {
           prov = prov + `\tS932\t"` + item._graph[0].data + `"`
