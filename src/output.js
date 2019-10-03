@@ -115,6 +115,10 @@ function serialize (prop, value, wd) {
       return caches.issn[value]
     case 'language':
       return caches.language[value]
+    case 'number-of-pages':
+      return value
+    case 'title':
+      return `en:"${value}"`
 
     default: return `"${value}"`
   }
