@@ -38,25 +38,18 @@ const caches = {
 
 const props = {
   P50: 'author',
+  P212: 'ISBN',
   P304: 'page',
   P356: 'DOI',
+  P407: 'language',
   P433: 'issue',
   P478: 'volume',
   P577: 'issued',
   P496: 'ORCID',
   P698: 'PMID',
   P932: 'PMCID',
-  P1433: 'ISSN',
-  P1476: 'title',
-  P2093: 'author'
-}
-
-const bookProps = {
-  P50: 'author',
-  P212: 'ISBN',
-  P407: 'language',
-  P577: 'issued',
   P1104: 'number-of-pages',
+  P1433: 'ISSN',
   P1476: 'title',
   P2093: 'author'
 }
@@ -192,8 +185,8 @@ export default {
         output = output + '\tCREATE\n\n\tLAST\tP31\tQ3331189' + prov + '\n'
         output = output + `\tLAST\tLen\t"` + item.title + `"\n`
 
-        for (const wd in bookProps) {
-          const prop = bookProps[wd]
+        for (const wd in props) {
+          const prop = props[wd]
           const value = item[prop]
 
           if (value == null) continue
