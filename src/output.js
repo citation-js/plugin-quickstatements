@@ -54,6 +54,11 @@ const props = {
   P2093: 'author'
 }
 
+const types = {
+  'book':            'Q3331189',
+  'article-journal': 'Q13442814'
+}
+
 function formatDateForWikidata (dateStr) {
   let isoDate = formatDate(dateStr)
   switch (isoDate.length) {
@@ -161,28 +166,9 @@ export default {
           // FIXME: if data is a list
         }
       }
-      if (item.type === 'article-journal') {
-        output = output + '\tCREATE\n\n\tLAST\tP31\tQ13442814' + prov + '\n'
-        output = output + `\tLAST\tLen\t"` + item.title + `"\n`
-
-        for (const wd in props) {
-          const prop = props[wd]
-          const value = item[prop]
-
-          if (value == null) continue
-
-          const serializedValue = serialize(prop, value, wd)
-
-          if (serializedValue == null) continue
-
-          output += []
-            .concat(serializedValue)
-            .map(value => `\tLAST\t${wd}\t${value}${prov}\n`)
-            .join('')
-        }
-        output = output + '\n'
-      } else if (item.type === 'book') {
-        output = output + '\tCREATE\n\n\tLAST\tP31\tQ3331189' + prov + '\n'
+      if (types[item.type]) {
+        const wdType = types[item.type]
+        output = output + '\tCREATE\n\n\tLAST\tP31\t' + wdType + prov + '\n'
         output = output + `\tLAST\tLen\t"` + item.title + `"\n`
 
         for (const wd in props) {
