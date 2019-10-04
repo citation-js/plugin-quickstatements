@@ -47,6 +47,7 @@ const props = {
   P577: 'issued',
   P496: 'ORCID',
   P698: 'PMID',
+  P856: 'URL',
   P932: 'PMCID',
   P1104: 'number-of-pages',
   P1433: 'ISSN',
