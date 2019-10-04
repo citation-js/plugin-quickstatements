@@ -75,7 +75,7 @@ function formatDateForWikidata (dateStr) {
   }
 }
 
-function serialize (prop, value, wd) {
+function serialize (prop, value, wd, cslType) {
   switch (prop) {
     case 'page':
       return `"${value.replace('--', '-')}"`
@@ -113,6 +113,8 @@ function serialize (prop, value, wd) {
       }
     case 'ISSN':
       return caches.issn[value]
+    case 'URL':
+      return cslType === `article-journal` ? undefined : value
     case 'language':
       return caches.language[value]
     case 'number-of-pages':
@@ -179,7 +181,7 @@ export default {
 
           if (value == null) continue
 
-          const serializedValue = serialize(prop, value, wd)
+          const serializedValue = serialize(prop, value, wd, item.type)
 
           if (serializedValue == null) continue
 
