@@ -1,6 +1,6 @@
 {
   "name": "@egonw/plugin-quickstatements",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Plugin that takes citation-js input and output QuickStatements.",
   "main": "lib/index.js",
   "scripts": {
