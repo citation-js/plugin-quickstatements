@@ -15,9 +15,11 @@ const caches = {
   orcid (items) {
     const orcids = []
       .concat(...items.map(
-        item => item.author.map(
-          author => author.ORCID && author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
-        )
+        item => item.author
+          ? item.author.map(
+            author => author.ORCID && author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
+          )
+          : undefined
       ))
       .filter((value, index, array) => value && array.indexOf(value) === index)
       .join('" "')
