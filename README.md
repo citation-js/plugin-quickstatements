@@ -10,27 +10,15 @@ to [Wikidata QuickStatements](https://tools.wmflabs.org/quickstatements/). Some 
 
 ## Install
 
-Add the following line to your `~/.npmrc`:
-
-```
-@egonw:registry=https://npm.pkg.github.com
-```
-
-And then run:
-
 ```shell
-npm install @egonw/plugin-quickstatements
+npm install @citation-js/plugin-quickstatements
 ```
 
 To run the below example, you also need to install a few other packages
 (as they are currently not automatically pulled in, it seems):
 
 ```shell
-npm install @citation-js/core
-npm install @citation-js/plugin-pubmed
-npm install @citation-js/plugin-doi
-npm install @babel/register
-npm install @babel/core
+npm install @citation-js/core @citation-js/plugin-pubmed @citation-js/plugin-doi @babel/register @babel/core
 ```
 
 
@@ -58,7 +46,7 @@ require('@citation-js/plugin-pubmed')
 require('@citation-js/plugin-doi')
 
 require('@babel/register')
-require('./src')
+require('@citation-js/plugin-quickstatements')
 
 c.Cite.async([
   '10.1186/s13321-019-0380-5',
@@ -78,7 +66,7 @@ const c = require('@citation-js/core')
 require('@citation-js/plugin-isbn')
 
 require('@babel/register')
-require('./src')
+require('@citation-js/plugin-quickstatements')
 
 c.Cite.async([
   '978-0956775016'
