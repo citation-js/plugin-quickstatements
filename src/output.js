@@ -60,7 +60,8 @@ const props = {
 const types = {
   'dataset': 'Q1172284',
   'book': 'Q3331189',
-  'article-journal': 'Q13442814'
+  'article-journal': 'Q13442814',
+  'chapter': 'Q1980247'
 }
 
 function formatDateForWikidata (dateStr) {
