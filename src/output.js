@@ -117,7 +117,7 @@ function serialize (prop, value, wd, cslType) {
     case 'ISSN':
       return caches.issn[value]
     case 'ISBN':
-      return cslType === `chapter` ? undefined : value
+      return cslType === `chapter` ? undefined : `"${value}"`
     case 'URL':
       return cslType === `article-journal` || cslType === `chapter`  ? undefined : value
     case 'language':
