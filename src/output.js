@@ -58,23 +58,23 @@ const props = {
 }
 
 const types = {
-  'dataset': 'Q1172284',
-  'book': 'Q3331189',
+  dataset: 'Q1172284',
+  book: 'Q3331189',
   'article-journal': 'Q13442814',
-  'chapter': 'Q1980247'
+  chapter: 'Q1980247'
 }
 
 function formatDateForWikidata (dateStr) {
-  let isoDate = formatDate(dateStr)
+  const isoDate = formatDate(dateStr)
   switch (isoDate.length) {
     case 4:
-      return `+` + isoDate + `-01-01T00:00:00Z/9`
+      return '+' + isoDate + '-01-01T00:00:00Z/9'
     case 7:
-      return `+` + isoDate + `-01T00:00:00Z/10`
+      return '+' + isoDate + '-01T00:00:00Z/10'
     case 10:
-      return `+` + isoDate + `T00:00:00Z/11`
+      return '+' + isoDate + 'T00:00:00Z/11'
 
-    default: return `+` + dateStr
+    default: return '+' + dateStr
   }
 }
 
@@ -87,10 +87,9 @@ function serialize (prop, value, wd, cslType) {
     case 'author':
       if (wd === 'P50') {
         return value.map((author, index) => {
-          let orcid = author.ORCID
-          if (orcid) {
-            orcid = orcid.replace(/^https?:\/\/orcid\.org\//, '')
-            let authorQID = caches.orcid[orcid]
+          if (author.ORCID) {
+            const orcid = author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
+            const authorQID = caches.orcid[orcid]
             if (authorQID) {
               const name = formatName(author)
               return name ? `${authorQID}\tP1932\t"${name}"\tP1545\t"${index + 1}"` : `${authorQID}\tP1545\t"${index + 1}"`
@@ -100,8 +99,8 @@ function serialize (prop, value, wd, cslType) {
       } else {
         return value.map((author, index) => {
           if (author.ORCID) {
-            let orcid = author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
-            let authorQID = caches.orcid[orcid]
+            const orcid = author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
+            const authorQID = caches.orcid[orcid]
             if (authorQID) {
               return undefined
             } else {
@@ -117,9 +116,9 @@ function serialize (prop, value, wd, cslType) {
     case 'ISSN':
       return caches.issn[value]
     case 'ISBN':
-      return cslType === `chapter` ? undefined : `"${value}"`
+      return cslType === 'chapter' ? undefined : `"${value}"`
     case 'URL':
-      return cslType === `article-journal` || cslType === `chapter`  ? undefined : value
+      return cslType === 'article-journal' || cslType === 'chapter' ? undefined : value
     case 'language':
       return caches.language[value]
     case 'number-of-pages':
@@ -141,14 +140,14 @@ export default {
         return `{ ${makeQuery(csl)} BIND("${cache}" AS ?cache) }`
       })
       .join(' UNION ')
-    let query = `SELECT ?key ?value ?cache WHERE { ${queries} }`
+    const query = `SELECT ?key ?value ?cache WHERE { ${queries} }`
 
     try {
       const url = wdk.sparqlQuery(query)
       const response = JSON.parse(util.fetchFile(url))
       const results = wdk.simplify.sparqlResults(response)
 
-      for (let { key, value, cache } of results) {
+      for (const { key, value, cache } of results) {
         caches[cache][key] = value
       }
     } catch (e) {
@@ -166,19 +165,19 @@ export default {
           prov = prov + '\tS248\tQ5188229'
         }
         if (item.accessed) {
-          prov = prov + `\tS813\t` + formatDateForWikidata(item.accessed)
+          prov = prov + '\tS813\t' + formatDateForWikidata(item.accessed)
         } else {
-          prov = prov + `\tS813\t+` + new Date().toISOString().substring(0, 10) + `T00:00:00Z/11`
+          prov = prov + '\tS813\t+' + new Date().toISOString().substring(0, 10) + 'T00:00:00Z/11'
         }
         if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item._graph[0].data) {
-          prov = prov + `\tS932\t"` + item._graph[0].data + `"`
+          prov = prov + '\tS932\t"' + item._graph[0].data + '"'
           // FIXME: if data is a list
         }
       }
       if (types[item.type]) {
         const wdType = types[item.type]
         output = output + '\tCREATE\n\n\tLAST\tP31\t' + wdType + prov + '\n'
-        output = output + `\tLAST\tLen\t"` + item.title + `"\n`
+        output = output + '\tLAST\tLen\t"' + item.title + '"\n'
 
         for (const wd in props) {
           const prop = props[wd]
