@@ -61,6 +61,7 @@ const types = {
   dataset: 'Q1172284',
   book: 'Q3331189',
   'article-journal': 'Q13442814',
+  article: 'Q15621286', // intellectual work
   chapter: 'Q1980247'
 }
 
