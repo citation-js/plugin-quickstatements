@@ -57,12 +57,22 @@ const props = {
   P2093: 'author'
 }
 
+// the below mappings should follow the following Wikidata SPARQL query:
+//
+// SELECT * WHERE{
+//   ?s wdt:P2888 ?o .
+//   FILTER(STRSTARTS(STR(?o), "https://citationstyles.org/ontology/type/"))
+// }
+//
+// Except when noted otherwise
 const types = {
-  dataset: 'Q1172284',
-  book: 'Q3331189',
+  dataset:           'Q1172284',
+  book:              'Q3331189',  // exception: each book edition has a unique ISBN
   'article-journal': 'Q13442814',
-  article: 'Q15621286', // intellectual work
-  chapter: 'Q1980247'
+  article:           'Q191067',
+  chapter:           'Q1980247',
+  review:            'Q265158',
+  'paper-conference':'Q23927052'
 }
 
 function formatDateForWikidata (dateStr) {
