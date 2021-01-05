@@ -66,13 +66,13 @@ const props = {
 //
 // Except when noted otherwise
 const types = {
-  dataset:           'Q1172284',
-  book:              'Q3331189',  // exception: each book edition has a unique ISBN
+  dataset: 'Q1172284',
+  book: 'Q3331189', // exception: each book edition has a unique ISBN
   'article-journal': 'Q13442814',
-  article:           'Q191067',
-  chapter:           'Q1980247',
-  review:            'Q265158',
-  'paper-conference':'Q23927052'
+  article: 'Q191067',
+  chapter: 'Q1980247',
+  review: 'Q265158',
+  'paper-conference': 'Q23927052'
 }
 
 function formatDateForWikidata (dateStr) {
