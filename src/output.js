@@ -66,13 +66,48 @@ const props = {
 //
 // Except when noted otherwise
 const types = {
-  dataset: 'Q1172284',
-  book: 'Q3331189', // exception: each book edition has a unique ISBN
-  'article-journal': 'Q13442814',
   article: 'Q191067',
+  'article-journal': 'Q13442814',
+  'article-magazine': 'Q30070590',
+  'article-newspaper': 'Q5707594',
+  bill: 'Q686822',
+  broadcast: 'Q11578774',
   chapter: 'Q1980247',
+  dataset: 'Q1172284',
+  entry: 'Q10389811',
+  'entry-dictionary': 'Q1580166',
+  'entry-encyclopedia': 'Q13433827',
+  figure: 'Q30070753',
+  interview: 'Q178651',
+  legal_case: 'Q2334719',
+  legislation: 'Q49371',
+  manuscript: 'Q87167',
+  map: 'Q4006',
+  motion_picture: 'Q11424',
+  musical_score: 'Q187947',
+  'paper-conference': 'Q23927052',
+  patent: 'Q253623',
+  post: 'Q7216866',
+  'post-weblog': 'Q17928402',
+  report: 'Q10870555',
   review: 'Q265158',
-  'paper-conference': 'Q23927052'
+  'review-book': 'Q637866',
+  song: 'Q7366',
+  speech: 'Q861911',
+  thesis: 'Q1266946',
+  treaty: 'Q131569',
+  webpage: 'Q36774',
+
+  // Exception: each book edition has a unique ISBN; otherwise use Q571 (book)
+  book: 'Q3331189',
+
+  // Three types have no exact match in Wikidata; these are alternatives
+  // Q4502142 (visual artwork) does not include non-artwork graphics (in theory)
+  graphic: 'Q4502142',
+  // pamphlet: unsure whether exact match
+  pamphlet: 'Q190399',
+  // Q628523 (message) also includes prophecies, protests, animal scent marks
+  personal_communication: 'Q628523'
 }
 
 function formatDateForWikidata (dateStr) {
