@@ -133,7 +133,7 @@ function serialize (prop, value, wd, cslType) {
     case 'ISBN':
       return cslType === 'chapter' ? undefined : `"${value}"`
     case 'URL':
-      return cslType === 'article-journal' || cslType === 'chapter' ? undefined : value
+      return cslType === 'article-journal' || cslType === 'chapter' ? undefined : `"${value}"`
     case 'language':
       return caches.language[value]
     case 'number-of-pages':
