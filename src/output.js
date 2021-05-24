@@ -17,8 +17,8 @@ const caches = {
       .concat(...items.map(
         item => item.author
           ? item.author.map(
-            author => author.ORCID && author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
-          )
+              author => author.ORCID && author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
+            )
           : undefined
       ))
       .filter((value, index, array) => value && array.indexOf(value) === index)
@@ -106,6 +106,8 @@ function serialize (prop, value, wd, cslType) {
               return name ? `${authorQID}\tP1932\t"${name}"\tP1545\t"${index + 1}"` : `${authorQID}\tP1545\t"${index + 1}"`
             }
           }
+
+          return undefined
         }).filter(Boolean)
       } else {
         return value.map((author, index) => {
@@ -170,7 +172,7 @@ export default {
     // generate output
     let output = ''
     for (const item of csl) {
-      var prov = ''
+      let prov = ''
       if (item.source) {
         if (item.source === 'PubMed') {
           prov = prov + '\tS248\tQ180686'
