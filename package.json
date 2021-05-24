@@ -9,7 +9,9 @@
     "lint": "standard \"src/**/*.js\" \"test/**/*.js\"",
     "coverage": "NODE_ENV=test nyc npm test",
     "report": "nyc report --reporter=lcov > coverage.lcov",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "prepublishOnly": "npm run babel",
+    "version": "npm run changelog",
     "preversion": "npm run lint && npm run test"
   },
   "repository": {
@@ -59,6 +61,7 @@
     "@citation-js/plugin-isbn": "^0.3.0",
     "@citation-js/plugin-pubmed": "^0.2.0",
     "babel-plugin-istanbul": "^6.0.0",
+    "conventional-changelog-cli": "^2.1.1",
     "mocha": "^8.4.0",
     "nyc": "^15.1.0",
     "standard": "^16.0.3"
