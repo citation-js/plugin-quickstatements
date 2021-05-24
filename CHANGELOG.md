@@ -1,3 +1,17 @@
+# [0.4.0](https://github.com/citation-js/plugin-quickstatements/compare/v0.3.5...v0.4.0) (2021-05-24)
+
+
+### Bug Fixes
+
+* quote URLs ([ede0c77](https://github.com/citation-js/plugin-quickstatements/commit/ede0c77a5a5beb8222b74fe7413494965a03a11f))
+
+
+### Features
+
+* add mappings for all entry types ([2bd6898](https://github.com/citation-js/plugin-quickstatements/commit/2bd689829aac6e07ff57ce0b33d4f786d242e79c))
+
+
+
 ## [0.3.5](https://github.com/citation-js/plugin-quickstatements/compare/v0.3.4...v0.3.5) (2021-01-07)
 
 
