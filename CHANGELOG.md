@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/citation-js/plugin-quickstatements/compare/v0.4.0...v0.4.1) (2021-08-04)
+
+
+### Bug Fixes
+
+* collapse whitespace in title ([b6fc2f1](https://github.com/citation-js/plugin-quickstatements/commit/b6fc2f112f7ae3385c836dd77b160abb3ea8e5e8))
+
+
+
 # [0.4.0](https://github.com/citation-js/plugin-quickstatements/compare/v0.3.5...v0.4.0) (2021-05-24)
 
 
