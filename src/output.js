@@ -174,7 +174,7 @@ function serialize (prop, value, wd, cslType) {
     case 'number-of-pages':
       return value
     case 'title':
-      return `en:"${value}"`
+      return `en:"${value.replace(/\s+/g, ' ')}"`
 
     default: return `"${value}"`
   }
