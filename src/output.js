@@ -3,7 +3,7 @@ import { format as formatName } from '@citation-js/name'
 import { util } from '@citation-js/core'
 import wdk from 'wikidata-sdk'
 
-const caches = {
+const fillCache = {
   issn (items) {
     const issns = items
       .map(item => item.ISSN)
@@ -124,7 +124,7 @@ function formatDateForWikidata (dateStr) {
   }
 }
 
-function serialize (prop, value, wd, cslType) {
+function serialize (prop, value, wd, cslType, caches) {
   switch (prop) {
     case 'page':
       return `"${value.replace('--', '-')}"`
@@ -182,13 +182,15 @@ function serialize (prop, value, wd, cslType) {
 
 export default {
   quickstatements (csl) {
+    // initialize caches
+    const caches = {}
+    for (const cache in fillCache) {
+      caches[cache] = {}
+    }
+
     // fill caches
-    const queries = Object.keys(caches)
-      .map(cache => {
-        const makeQuery = caches[cache]
-        caches[cache] = {}
-        return `{ ${makeQuery(csl)} BIND("${cache}" AS ?cache) }`
-      })
+    const queries = Object.keys(fillCache)
+      .map(cache => `{ ${fillCache[cache](csl)} BIND("${cache}" AS ?cache) }`)
       .join(' UNION ')
     const query = `SELECT ?key ?value ?cache WHERE { ${queries} }`
 
@@ -235,7 +237,7 @@ export default {
 
           if (value == null) continue
 
-          const serializedValue = serialize(prop, value, wd, item.type)
+          const serializedValue = serialize(prop, value, wd, item.type, caches)
 
           if (serializedValue == null) continue
 
