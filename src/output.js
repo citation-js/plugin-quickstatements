@@ -3,37 +3,26 @@ import { format as formatName } from '@citation-js/name'
 import { util } from '@citation-js/core'
 import wdk from 'wikidata-sdk'
 
+function unique (array) {
+  return array.filter((value, index, array) => array.indexOf(value) === index)
+}
+
+function getOrcid (author) {
+  const orcid = author._orcid || author.ORCID || author._ORCID || author.orcid
+  return orcid && orcid.replace(/^https?:\/\/orcid\.org\//, '')
+}
+
 const fillCache = {
   issn (items) {
-    const issns = items
-      .map(item => item.ISSN)
-      .filter((value, index, array) => array.indexOf(value) === index)
-      .join('" "')
-
+    const issns = unique(items.map(item => item.ISSN)).join('" "')
     return `VALUES ?key { "${issns}" } . ?value wdt:P236 ?key .`
   },
   orcid (items) {
-    const orcids = []
-      .concat(...items.map(
-        item => item.author
-          ? item.author.map(
-              author => author.ORCID && author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
-            )
-          : undefined
-      ))
-      .filter((value, index, array) => value && array.indexOf(value) === index)
-      .join('" "')
-
+    const orcids = unique(items.flatMap(item => (item.author || []).map(getOrcid))).join('" "')
     return `VALUES ?key { "${orcids}" } . ?value wdt:P496 ?key .`
   },
   language (items) {
-    const languages = []
-      .concat(...items.map(
-        item => item.language
-      ))
-      .filter((value, index, array) => value && array.indexOf(value) === index)
-      .join('" "')
-
+    const languages = unique(items.map(item => item.language)).join('" "')
     return `VALUES ?key { "${languages}" } . ?value wdt:P218 ?key .`
   }
 }
