@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/citation-js/plugin-quickstatements#readme",
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "files": [
     "/lib"
@@ -67,6 +67,6 @@
     "standard": "^16.0.3"
   },
   "peerDependencies": {
-    "@citation-js/core": "^0.5.1"
+    "@citation-js/core": "^0.6.0"
   }
 }
