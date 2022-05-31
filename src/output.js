@@ -226,9 +226,8 @@ export default {
         } else {
           prov = prov + '\tS813\t+' + new Date().toISOString().substring(0, 10) + 'T00:00:00Z/11'
         }
-        if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item._graph[0].data) {
-          prov = prov + '\tS932\t"' + item._graph[0].data + '"'
-          // FIXME: if data is a list
+        if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item.PMCID) {
+          prov = prov + '\tS932\t"' + item.PMCID + '"'
         }
       }
       if (types[item.type]) {
