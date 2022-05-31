@@ -1,8 +1,9 @@
 import { format as formatDate } from '@citation-js/date'
 import { format as formatName } from '@citation-js/name'
-import { fillCaches } from './cache.js'
+import { fillCaches, getOrcid } from './cache.js'
 
-const props = {
+const WIKIDATA_PROPS = {
+  Len: 'title',
   P50: 'author',
   P212: 'ISBN',
   P304: 'page',
@@ -29,7 +30,7 @@ const props = {
 // }
 //
 // Except when noted otherwise
-const types = {
+const CSL_TYPES = {
   article: 'Q191067',
   'article-journal': 'Q13442814',
   'article-magazine': 'Q30070590',
@@ -89,8 +90,8 @@ const types = {
   webpage: 'Q36774'
 }
 
-function formatDateForWikidata (dateStr) {
-  const isoDate = formatDate(dateStr)
+function formatDateForWikidata (date) {
+  const isoDate = typeof date === 'string' ? date : formatDate(date)
   switch (isoDate.length) {
     case 4:
       return '+' + isoDate + '-01-01T00:00:00Z/9'
@@ -99,11 +100,11 @@ function formatDateForWikidata (dateStr) {
     case 10:
       return '+' + isoDate + 'T00:00:00Z/11'
 
-    default: return '+' + dateStr
+    default: return '+' + date
   }
 }
 
-function serialize (prop, value, wd, cslType, caches) {
+function serializeValue (prop, value, wd, cslType, caches) {
   switch (prop) {
     case 'page':
       return `"${value.replace('--', '-')}"`
@@ -112,32 +113,33 @@ function serialize (prop, value, wd, cslType, caches) {
     case 'author':
       if (wd === 'P50') {
         return value.map((author, index) => {
-          if (author.ORCID) {
-            const orcid = author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
-            const authorQID = caches.orcid[orcid]
-            if (authorQID) {
-              const name = formatName(author)
-              return name ? `${authorQID}\tP1932\t"${name}"\tP1545\t"${index + 1}"` : `${authorQID}\tP1545\t"${index + 1}"`
-            }
+          const authorOrcid = getOrcid(author)
+          const authorQid = caches.orcid[authorOrcid]
+          if (!authorOrcid || !authorQid) {
+            return undefined
           }
 
-          return undefined
+          const parts = [authorQid, 'P1545', `"${index + 1}"`]
+          const name = formatName(author)
+          if (name) {
+            parts.push('P1932', `"${name}"`)
+          }
+          return parts
         }).filter(Boolean)
       } else {
         return value.map((author, index) => {
-          if (author.ORCID) {
-            const orcid = author.ORCID.replace(/^https?:\/\/orcid\.org\//, '')
-            const authorQID = caches.orcid[orcid]
-            if (authorQID) {
-              return undefined
-            } else {
-              const name = formatName(author)
-              return name ? `"${name}"\tP496\t"${orcid}"\tP1545\t"${index + 1}"` : undefined
-            }
-          } else {
-            const name = formatName(author)
-            return name ? `"${name}"\tP1545\t"${index + 1}"` : undefined
+          const authorOrcid = getOrcid(author)
+          const authorQid = caches.orcid[authorOrcid]
+          const name = formatName(author)
+          if (!name || (authorOrcid && authorQid)) {
+            return undefined
           }
+
+          const parts = [`"${name}"`, 'P1545', `"${index + 1}"`]
+          if (authorOrcid) {
+            parts.push('P496', `"${authorOrcid}"`)
+          }
+          return parts
         }).filter(Boolean)
       }
     case 'ISSN':
@@ -152,59 +154,92 @@ function serialize (prop, value, wd, cslType, caches) {
       return caches.language[value]
     case 'number-of-pages':
       return value
-    case 'title':
-      return `en:"${value.replace(/\s+/g, ' ')}"`
+    case 'title': {
+      const collapsed = value.replace(/\s+/g, ' ')
+      return wd[0] === 'P' ? `en:"${collapsed}"` : `"${collapsed}"`
+    }
 
     default: return `"${value}"`
   }
 }
 
+function getProvenance (item) {
+  const provenance = []
+
+  if (item.source === 'PubMed') {
+    provenance.push(['S248', 'Q180686'])
+  } else if (item.source === 'Crossref') {
+    provenance.push(['S248', 'Q5188229'])
+  }
+
+  if (provenance.length) {
+    if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item.PMCID) {
+      provenance.push(['S932', `"${item.PMCID}"`])
+    }
+
+    if (item.accessed) {
+      provenance.push(['S813', formatDateForWikidata(item.accessed)])
+    } else {
+      provenance.push(['S813', formatDateForWikidata((new Date()).toISOString().substring(0, 10))])
+    }
+  }
+
+  return provenance
+}
+
+function addProvenance (command, provenance) {
+  if (command[0][0] === 'P') {
+    return [...command, ...provenance]
+  } else {
+    return command
+  }
+}
+
+function serializeEntry (entry) {
+  const prefix = entry.id || 'LAST'
+  const provenance = entry.provenance.slice().flat()
+  const commands = entry.commands.map(command => ['', prefix, ...addProvenance(command, provenance)].join('\t'))
+
+  if (!entry.id) {
+    commands.unshift('\tCREATE')
+  }
+
+  return commands.join('\n') + '\n'
+}
+
 export default {
   quickstatements (csl) {
     const caches = fillCaches(csl)
+    const entries = []
 
-    // generate output
-    let output = ''
     for (const item of csl) {
-      let prov = ''
-      if (item.source) {
-        if (item.source === 'PubMed') {
-          prov = prov + '\tS248\tQ180686'
-        } else if (item.source === 'Crossref') {
-          prov = prov + '\tS248\tQ5188229'
-        }
-        if (item.accessed) {
-          prov = prov + '\tS813\t' + formatDateForWikidata(item.accessed)
-        } else {
-          prov = prov + '\tS813\t+' + new Date().toISOString().substring(0, 10) + 'T00:00:00Z/11'
-        }
-        if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item.PMCID) {
-          prov = prov + '\tS932\t"' + item.PMCID + '"'
-        }
+      if (!CSL_TYPES[item.type]) { continue }
+
+      const entry = {
+        id: item.custom && item.custom.QID,
+        commands: [
+          ['P31', CSL_TYPES[item.type]]
+        ],
+        provenance: getProvenance(item)
       }
-      if (types[item.type]) {
-        const wdType = types[item.type]
-        output = output + '\tCREATE\n\n\tLAST\tP31\t' + wdType + prov + '\n'
-        output = output + '\tLAST\tLen\t"' + item.title + '"\n'
 
-        for (const wd in props) {
-          const prop = props[wd]
-          const value = item[prop]
+      for (const wikidataProp in WIKIDATA_PROPS) {
+        const cslProp = WIKIDATA_PROPS[wikidataProp]
+        const cslValue = item[cslProp]
+        if (cslValue == null) { continue }
 
-          if (value == null) continue
+        const wikidataValue = serializeValue(cslProp, cslValue, wikidataProp, item.type, caches)
+        if (wikidataValue == null) { continue }
 
-          const serializedValue = serialize(prop, value, wd, item.type, caches)
-
-          if (serializedValue == null) continue
-
-          output += []
-            .concat(serializedValue)
-            .map(value => `\tLAST\t${wd}\t${value}${prov}\n`)
-            .join('')
-        }
-        output = output + '\n'
+        entry.commands.push(...[]
+          .concat(wikidataValue)
+          .map(wikidataValue => [wikidataProp, ...[].concat(wikidataValue)])
+        )
       }
+
+      entries.push(entry)
     }
-    return output
+
+    return entries.map(serializeEntry).join('\n\n')
   }
 }

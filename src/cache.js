@@ -1,11 +1,6 @@
 import { logger, util } from '@citation-js/core'
 import wdk from 'wikidata-sdk'
 
-function getOrcid (author) {
-  const orcid = author._orcid || author.ORCID || author._ORCID || author.orcid
-  return orcid && orcid.replace(/^https?:\/\/orcid\.org\//, '')
-}
-
 const QUERY_BUILDERS = {
   issn: {
     value: '?value wdt:P236 ?key',
@@ -29,6 +24,11 @@ function buildQuery (type, items) {
   const { key, value } = QUERY_BUILDERS[type]
   const keys = '"' + unique(key(items)).join('" "') + '"'
   return `{ VALUES ?key { ${keys} } . ${value} . BIND("${type}" AS ?cache) }`
+}
+
+export function getOrcid (author) {
+  const orcid = author._orcid || author.ORCID || author._ORCID || author.orcid
+  return orcid && orcid.replace(/^https?:\/\/orcid\.org\//, '')
 }
 
 export function fillCaches (csl) {
