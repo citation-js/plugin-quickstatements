@@ -28,7 +28,7 @@ function unique (array) {
 function buildQuery (type, items) {
   const { key, value } = QUERY_BUILDERS[type]
   const keys = '"' + unique(key(items)).join('" "') + '"'
-  return `VALUES ?key { ${keys} } . ${value} . BIND("${type}" AS ?cache)`
+  return `{ VALUES ?key { ${keys} } . ${value} . BIND("${type}" AS ?cache) }`
 }
 
 export function fillCaches (csl) {
