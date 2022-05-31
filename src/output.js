@@ -1,31 +1,6 @@
 import { format as formatDate } from '@citation-js/date'
 import { format as formatName } from '@citation-js/name'
-import { util } from '@citation-js/core'
-import wdk from 'wikidata-sdk'
-
-function unique (array) {
-  return array.filter((value, index, array) => array.indexOf(value) === index)
-}
-
-function getOrcid (author) {
-  const orcid = author._orcid || author.ORCID || author._ORCID || author.orcid
-  return orcid && orcid.replace(/^https?:\/\/orcid\.org\//, '')
-}
-
-const fillCache = {
-  issn (items) {
-    const issns = unique(items.map(item => item.ISSN)).join('" "')
-    return `VALUES ?key { "${issns}" } . ?value wdt:P236 ?key .`
-  },
-  orcid (items) {
-    const orcids = unique(items.flatMap(item => (item.author || []).map(getOrcid))).join('" "')
-    return `VALUES ?key { "${orcids}" } . ?value wdt:P496 ?key .`
-  },
-  language (items) {
-    const languages = unique(items.map(item => item.language)).join('" "')
-    return `VALUES ?key { "${languages}" } . ?value wdt:P218 ?key .`
-  }
-}
+import { fillCaches } from './cache.js'
 
 const props = {
   P50: 'author',
@@ -76,7 +51,6 @@ const types = {
   event: 'Q1656682',
   figure: 'Q30070753',
 
-  // Three types have no exact match in Wikidata; these are alternatives
   // Q4502142 (visual artwork) does not include non-artwork graphics (in theory)
   graphic: 'Q4502142',
 
@@ -187,29 +161,7 @@ function serialize (prop, value, wd, cslType, caches) {
 
 export default {
   quickstatements (csl) {
-    // initialize caches
-    const caches = {}
-    for (const cache in fillCache) {
-      caches[cache] = {}
-    }
-
-    // fill caches
-    const queries = Object.keys(fillCache)
-      .map(cache => `{ ${fillCache[cache](csl)} BIND("${cache}" AS ?cache) }`)
-      .join(' UNION ')
-    const query = `SELECT ?key ?value ?cache WHERE { ${queries} }`
-
-    try {
-      const url = wdk.sparqlQuery(query)
-      const response = JSON.parse(util.fetchFile(url))
-      const results = wdk.simplify.sparqlResults(response)
-
-      for (const { key, value, cache } of results) {
-        caches[cache][key] = value
-      }
-    } catch (e) {
-      console.error(e)
-    }
+    const caches = fillCaches(csl)
 
     // generate output
     let output = ''
