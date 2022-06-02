@@ -1,3 +1,19 @@
+# [0.5.0](https://github.com/citation-js/plugin-quickstatements/compare/v0.4.1...v0.5.0) (2022-06-02)
+
+
+### Bug Fixes
+
+* get provenance from PMC IDs ([6e1b780](https://github.com/citation-js/plugin-quickstatements/commit/6e1b7809660b0748580aea3f9b65fd4b82aa462f))
+* make plugin re-usable ([34e5005](https://github.com/citation-js/plugin-quickstatements/commit/34e5005e4a11e6039d107c8851b93b686b221c87)), closes [#7](https://github.com/citation-js/plugin-quickstatements/issues/7)
+
+
+### Features
+
+* update property mappings to CSL v1.0.2 ([c989fa7](https://github.com/citation-js/plugin-quickstatements/commit/c989fa769af300a48598ef7d5d0cfb6e382eb631))
+* update types for CSL 1.0.2 ([ea261ad](https://github.com/citation-js/plugin-quickstatements/commit/ea261ad5330725287d650a6bc7bf2e0d9ac47b6d))
+
+
+
 ## [0.4.1](https://github.com/citation-js/plugin-quickstatements/compare/v0.4.0...v0.4.1) (2021-08-04)
 
 
