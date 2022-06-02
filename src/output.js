@@ -7,7 +7,9 @@ const WIKIDATA_PROPS = {
   P50: 'author',
   P212: 'ISBN',
   P304: 'page',
+  P348: 'version',
   P356: 'DOI',
+  P393: 'edition',
   P407: 'language',
   P433: 'issue',
   P478: 'volume',
@@ -19,6 +21,7 @@ const WIKIDATA_PROPS = {
   P1104: 'number-of-pages',
   P1433: 'ISSN',
   P1476: 'title',
+  P1813: 'title-short',
   P2093: 'author'
 }
 
@@ -154,6 +157,7 @@ function serializeValue (prop, value, wd, cslType, caches) {
       return caches.language[value]
     case 'number-of-pages':
       return value
+    case 'title-short':
     case 'title': {
       const collapsed = value.replace(/\s+/g, ' ')
       return wd[0] === 'P' ? `en:"${collapsed}"` : `"${collapsed}"`
