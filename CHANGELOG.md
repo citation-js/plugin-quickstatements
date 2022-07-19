@@ -1,3 +1,12 @@
+## [0.5.1](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.0...v0.5.1) (2022-07-19)
+
+
+### Bug Fixes
+
+* skip empty string values ([cb1614d](https://github.com/citation-js/plugin-quickstatements/commit/cb1614def436aba71ed8327037cf8ff05f34b589)), closes [#8](https://github.com/citation-js/plugin-quickstatements/issues/8)
+
+
+
 # [0.5.0](https://github.com/citation-js/plugin-quickstatements/compare/v0.4.1...v0.5.0) (2022-06-02)
 
 
