@@ -230,7 +230,7 @@ export default {
       for (const wikidataProp in WIKIDATA_PROPS) {
         const cslProp = WIKIDATA_PROPS[wikidataProp]
         const cslValue = item[cslProp]
-        if (cslValue == null) { continue }
+        if (cslValue == null || cslValue === '') { continue }
 
         const wikidataValue = serializeValue(cslProp, cslValue, wikidataProp, item.type, caches)
         if (wikidataValue == null) { continue }
