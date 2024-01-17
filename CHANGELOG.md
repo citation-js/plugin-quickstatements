@@ -1,3 +1,12 @@
+## [0.5.2](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.1...v0.5.2) (2024-01-17)
+
+
+### Bug Fixes
+
+* fallback for empty/incorrect type ([9d76d6b](https://github.com/citation-js/plugin-quickstatements/commit/9d76d6b8f7b2ff965f70994e2ccb1380b9449282))
+
+
+
 ## [0.5.1](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.0...v0.5.1) (2022-07-19)
 
 
