@@ -37,6 +37,21 @@ const apiTests = [
 `,
     /* eslint-enable no-tabs */
     input: require('./data.json')
+  },
+  {
+    name: 'invalid type (thesis/dissertation)',
+    /* eslint-disable no-tabs */
+    output: `	CREATE
+	LAST	P31	Q386724	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	Len	"Biological pathway abstractions"
+	LAST	P212	"9789464733617"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P356	"10.26481/DIS.20240116AW"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P856	"http://dx.doi.org/10.26481/dis.20240116aw"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P1476	en:"Biological pathway abstractions"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P2093	"Andra Sachinder Waagmeester"	P1545	"1"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+`,
+    /* eslint-enable no-tabs */
+    input: require('./thesis.json')
   }
 ]
 

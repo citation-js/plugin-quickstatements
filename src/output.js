@@ -48,7 +48,7 @@ const CSL_TYPES = {
   // classic
   collection: 'Q9388534',
   dataset: 'Q1172284',
-  // document
+  document: 'Q386724',
   entry: 'Q10389811',
   'entry-dictionary': 'Q1580166',
   'entry-encyclopedia': 'Q13433827',
@@ -217,12 +217,12 @@ export default {
     const entries = []
 
     for (const item of csl) {
-      if (!CSL_TYPES[item.type]) { continue }
+      const cslType = item.type in CSL_TYPES ? item.type : 'document'
 
       const entry = {
         id: item.custom && item.custom.QID,
         commands: [
-          ['P31', CSL_TYPES[item.type]]
+          ['P31', CSL_TYPES[cslType]]
         ],
         provenance: getProvenance(item)
       }
@@ -232,7 +232,7 @@ export default {
         const cslValue = item[cslProp]
         if (cslValue == null || cslValue === '') { continue }
 
-        const wikidataValue = serializeValue(cslProp, cslValue, wikidataProp, item.type, caches)
+        const wikidataValue = serializeValue(cslProp, cslValue, wikidataProp, cslType, caches)
         if (wikidataValue == null) { continue }
 
         entry.commands.push(...[]
