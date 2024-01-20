@@ -1,3 +1,7 @@
+## [0.5.3](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.2...v0.5.3) (2024-01-20)
+
+
+
 ## [0.5.2](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.1...v0.5.2) (2024-01-17)
 
 
