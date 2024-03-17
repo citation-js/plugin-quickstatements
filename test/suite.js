@@ -52,6 +52,23 @@ const apiTests = [
 `,
     /* eslint-enable no-tabs */
     input: require('./thesis.json')
+  },
+  {
+    name: 'HTML in title',
+    /* eslint-disable no-tabs */
+    output: `	CREATE
+	LAST	P31	Q13442814	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	Len	"Mapping wing morphs of Tetrix subulata using citizen science data: Flightless groundhoppers are more prevalent in grasslands near water"
+	LAST	P50	Q45907528	P1545	"1"	P1932	"Lars G. Willighagen"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P50	Q41047563	P1545	"2"	P1932	"Eelke Jongejans"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P356	"10.1111/ICAD.12730"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P407	Q1860	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P577	+2024-03-02T00:00:00Z/11	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P1433	Q15760625	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P1476	en:"Mapping wing morphs of Tetrix subulata using citizen science data: Flightless groundhoppers are more prevalent in grasslands near water"	P6833	en:"Mapping wing morphs of <i>Tetrix subulata</i> using citizen science data: Flightless groundhoppers are more prevalent in grasslands near water"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+`,
+    /* eslint-enable no-tabs */
+    input: require('./html.json')
   }
 ]
 

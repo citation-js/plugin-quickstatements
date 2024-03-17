@@ -107,6 +107,13 @@ function formatDateForWikidata (date) {
   }
 }
 
+function formatTitle (title) {
+  return {
+    html: title.replace(/<(?!\/?(i|sub|sup)).+?>/g, '').replace(/\s+/g, ' '),
+    text: title.replace(/<.+?>/g, '').replace(/\s+/g, ' ')
+  }
+}
+
 function serializeValue (prop, value, wd, cslType, caches) {
   switch (prop) {
     case 'page':
@@ -159,8 +166,13 @@ function serializeValue (prop, value, wd, cslType, caches) {
       return value
     case 'title-short':
     case 'title': {
-      const collapsed = value.replace(/\s+/g, ' ')
-      return wd[0] === 'P' ? `en:"${collapsed}"` : `"${collapsed}"`
+      const title = formatTitle(value)
+      if (wd[0] === 'P') {
+        const command = `en:"${title.text}"`
+        return title.text === title.html ? command : [[command, 'P6833', `en:"${title.html}"`]]
+      } else {
+        return `"${title.text}"`
+      }
     }
 
     default: return `"${value}"`

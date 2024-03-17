@@ -1,0 +1,53 @@
+[
+  {
+    "publisher": "Wiley",
+    "DOI": "10.1111/icad.12730",
+    "type": "article-journal",
+    "source": "Crossref",
+    "title": "Mapping wing morphs of <i>Tetrix subulata</i> using citizen science data: Flightless groundhoppers are more prevalent in grasslands near water",
+    "author": [
+      {
+        "ORCID": "http://orcid.org/0000-0002-4751-4637",
+        "authenticated-orcid": false,
+        "given": "Lars G.",
+        "family": "Willighagen",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Department of Ecology, Radboud Institute for Biological and Environmental Sciences Radboud University  Nijmegen The Netherlands"
+          }
+        ]
+      },
+      {
+        "ORCID": "http://orcid.org/0000-0003-1148-7419",
+        "authenticated-orcid": false,
+        "given": "Eelke",
+        "family": "Jongejans",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Ecology, Radboud Institute for Biological and Environmental Sciences Radboud University  Nijmegen The Netherlands"
+          },
+          {
+            "name": "Department of Animal Ecology NIOO‐KNAW  Wageningen The Netherlands"
+          }
+        ]
+      }
+    ],
+    "container-title": "Insect Conservation and Diversity",
+    "language": "en",
+    "issued": {
+      "date-parts": [
+        [
+          2024,
+          3,
+          2
+        ]
+      ]
+    },
+    "URL": "http://dx.doi.org/10.1111/icad.12730",
+    "ISSN": "1752-458X",
+    "container-title-short": "Insect Conserv Diversity",
+    "id": "temp_id_321938435260954"
+  }
+]
