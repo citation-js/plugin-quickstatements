@@ -1,3 +1,12 @@
+## [0.5.4](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.3...v0.5.4) (2024-03-17)
+
+
+### Bug Fixes
+
+* use P6833 for titles; omit HTML otherwise ([0fe2cdf](https://github.com/citation-js/plugin-quickstatements/commit/0fe2cdfef5d8aad9fc69014567ec483081ade036))
+
+
+
 ## [0.5.3](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.2...v0.5.3) (2024-01-20)
 
 
