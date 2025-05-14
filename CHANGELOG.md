@@ -1,3 +1,12 @@
+## [0.5.5](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.4...v0.5.5) (2025-05-14)
+
+
+### Bug Fixes
+
+* set title language and use Lmul ([f198a7d](https://github.com/citation-js/plugin-quickstatements/commit/f198a7da845f9ea7f0c9885121851ffab38dfc99))
+
+
+
 ## [0.5.4](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.3...v0.5.4) (2024-03-17)
 
 
