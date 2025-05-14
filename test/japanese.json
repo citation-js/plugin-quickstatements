@@ -1,0 +1,25 @@
+[
+  {
+    "type": "book",
+    "author": [
+      {
+        "family": "門倉百合子"
+      }
+    ],
+    "URL": "https://books.google.com/books/about/70%E6%AD%B3%E3%81%AE%E3%82%A6%E3%82%A3%E3%82%AD%E3%83%9A%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3.html?hl=&id=aD9V0AEACAAJ",
+    "abstract": "人生がどんどん面白くなる。ウィキペディアンにあなたもなりませんか!",
+    "ISBN": "9784907126612",
+    "language": "ja",
+    "title": "70歳のウィキペディアン",
+    "issued": {
+      "date-parts": [
+        [
+          2023,
+          11,
+          3
+        ]
+      ]
+    },
+    "id": "temp_id_0010247463697761194"
+  }
+]

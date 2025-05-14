@@ -3,7 +3,7 @@ import { format as formatName } from '@citation-js/name'
 import { fillCaches, getOrcid } from './cache.js'
 
 const WIKIDATA_PROPS = {
-  Len: 'title',
+  Lmul: 'title',
   P50: 'author',
   P212: 'ISBN',
   P304: 'page',
@@ -114,66 +114,64 @@ function formatTitle (title) {
   }
 }
 
-function serializeValue (prop, value, wd, cslType, caches) {
-  switch (prop) {
-    case 'page':
+function serializeValue (property, value, item, caches) {
+  switch (property) {
+    case 'P304': // page
       return `"${value.replace('--', '-')}"`
-    case 'issued':
-      return `${formatDateForWikidata(value)}`
-    case 'author':
-      if (wd === 'P50') {
-        return value.map((author, index) => {
-          const authorOrcid = getOrcid(author)
-          const authorQid = caches.orcid[authorOrcid]
-          if (!authorOrcid || !authorQid) {
-            return undefined
-          }
+    case 'P577': // issued
+      return formatDateForWikidata(value)
+    case 'P50': // author
+      return value.map((author, index) => {
+        const authorOrcid = getOrcid(author)
+        const authorQid = caches.orcid[authorOrcid]
+        if (!authorOrcid || !authorQid) {
+          return undefined
+        }
 
-          const parts = [authorQid, 'P1545', `"${index + 1}"`]
-          const name = formatName(author)
-          if (name) {
-            parts.push('P1932', `"${name}"`)
-          }
-          return parts
-        }).filter(Boolean)
-      } else {
-        return value.map((author, index) => {
-          const authorOrcid = getOrcid(author)
-          const authorQid = caches.orcid[authorOrcid]
-          const name = formatName(author)
-          if (!name || (authorOrcid && authorQid)) {
-            return undefined
-          }
+        const parts = [authorQid, 'P1545', `"${index + 1}"`]
+        const name = formatName(author)
+        if (name) {
+          parts.push('P1932', `"${name}"`)
+        }
+        return parts
+      }).filter(Boolean)
+    case 'P2093': // author
+      return value.map((author, index) => {
+        const authorOrcid = getOrcid(author)
+        const authorQid = caches.orcid[authorOrcid]
+        const name = formatName(author)
+        if (!name || (authorOrcid && authorQid)) {
+          return undefined
+        }
 
-          const parts = [`"${name}"`, 'P1545', `"${index + 1}"`]
-          if (authorOrcid) {
-            parts.push('P496', `"${authorOrcid}"`)
-          }
-          return parts
-        }).filter(Boolean)
-      }
-    case 'ISSN':
+        const parts = [`"${name}"`, 'P1545', `"${index + 1}"`]
+        if (authorOrcid) {
+          parts.push('P496', `"${authorOrcid}"`)
+        }
+        return parts
+      }).filter(Boolean)
+    case 'P1433': // ISSN
       return caches.issn[value]
-    case 'DOI':
+    case 'P356': // DOI
       return `"${value.toUpperCase()}"`
-    case 'ISBN':
-      return cslType === 'chapter' ? undefined : `"${value}"`
-    case 'URL':
-      return cslType === 'article-journal' || cslType === 'chapter' ? undefined : `"${value}"`
-    case 'language':
+    case 'P212': // ISBN
+      return item.type === 'chapter' ? undefined : `"${value}"`
+    case 'P856': // URL
+      return item.type === 'article-journal' || item.type === 'chapter' ? undefined : `"${value}"`
+    case 'P407': // language
       return caches.language[value]
-    case 'number-of-pages':
+    case 'P1104': // number-of-pages
       return value
-    case 'title-short':
-    case 'title': {
+    case 'P1476': // title
+    case 'P1813': // title-short
+    {
       const title = formatTitle(value)
-      if (wd[0] === 'P') {
-        const command = `en:"${title.text}"`
-        return title.text === title.html ? command : [[command, 'P6833', `en:"${title.html}"`]]
-      } else {
-        return `"${title.text}"`
-      }
+      const language = caches.languageWiki[item.language] || 'en'
+      const command = `${language}:"${title.text}"`
+      return title.text === title.html ? command : [[command, 'P6833', `${language}:"${title.html}"`]]
     }
+    case 'Lmul': // title
+      return `"${formatTitle(value).text}"`
 
     default: return `"${value}"`
   }
@@ -244,7 +242,7 @@ export default {
         const cslValue = item[cslProp]
         if (cslValue == null || cslValue === '') { continue }
 
-        const wikidataValue = serializeValue(cslProp, cslValue, wikidataProp, cslType, caches)
+        const wikidataValue = serializeValue(wikidataProp, cslValue, item, caches)
         if (wikidataValue == null) { continue }
 
         entry.commands.push(...[]

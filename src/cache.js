@@ -13,6 +13,10 @@ const QUERY_BUILDERS = {
   language: {
     value: '?value wdt:P218 ?key',
     key: items => items.map(item => item.language)
+  },
+  languageWiki: {
+    value: '?value ^wdt:P424/wdt:P218 ?key',
+    key: items => items.map(item => item.language)
   }
 }
 
