@@ -22,7 +22,8 @@ const WIKIDATA_PROPS = {
   P1433: 'ISSN',
   P1476: 'title',
   P1813: 'title-short',
-  P2093: 'author'
+  P2093: 'author',
+  P9767: 'version'
 }
 
 // the below mappings should follow the following Wikidata SPARQL query:
@@ -158,6 +159,10 @@ function serializeValue (property, value, item, caches) {
       return item.type === 'chapter' ? undefined : `"${value}"`
     case 'P856': // URL
       return item.type === 'article-journal' || item.type === 'chapter' ? undefined : `"${value}"`
+    case 'P348': // version
+      return item.type === 'book' || item.type === 'software' || item.type === 'dataset' ? `"${value}"` : undefined
+    case 'P9767': // version
+      return item.type === 'book' || item.type === 'software' || item.type === 'dataset' ? undefined : `"${value}"`
     case 'P407': // language
       return caches.language[value]
     case 'P1104': // number-of-pages
