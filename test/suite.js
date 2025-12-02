@@ -101,6 +101,22 @@ const apiTests = [
 `,
     /* eslint-enable no-tabs */
     input: require('./preprint.json')
+  },
+  {
+    name: 'HTML (2)',
+    /* eslint-disable no-tabs */
+    output: `	CREATE
+	LAST	P31	Q386724	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	Lmul	"Brad Patterson, Tom Brooking, and Jim McAloon, Unpacking the Kist: The Scots in New Zealand. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."
+	LAST	P356	"10.21083/IRSS.V39I0.2977"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P478	"39"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P577	+2014-11-03T00:00:00Z/11	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P856	"http://dx.doi.org/10.21083/irss.v39i0.2977"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P1476	en:"Brad Patterson, Tom Brooking, and Jim McAloon, Unpacking the Kist: The Scots in New Zealand. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."	P6833	en:"Brad Patterson, Tom Brooking, and Jim McAloon, <i>Unpacking the Kist: The Scots in New Zealand</i>. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+	LAST	P2093	"Seán Gerard Brosnahan"	P1545	"1"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
+`,
+    /* eslint-enable no-tabs */
+    input: require('./html-2.json')
   }
 ]
 

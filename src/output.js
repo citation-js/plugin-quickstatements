@@ -1,3 +1,4 @@
+import { decode as decodeHtmlEntities } from 'html-entities'
 import { format as formatDate } from '@citation-js/date'
 import { format as formatName } from '@citation-js/name'
 import { fillCaches, getOrcid } from './cache.js'
@@ -108,10 +109,40 @@ function formatDateForWikidata (date) {
   }
 }
 
+const PATTERN_P6833_HTML = /<([buap]|scp|span|sc|strong)(?: .+?)?>([^<>]*?)<\/\1>|<\/?mml:[a-z][a-z0-9]+>|<br ?\/?>/gi
+const PATTERN_P6833_HTML_2 = /<(em|italic)(?: .+?)?>([^<>]*?)<\/\1>/
+const PATTERN_PLAIN_TEXT = /<([ibuap]|sup|sub|scp|span|sc|strong)(?: .+?)?>([^<>]*?)<\/\1>|<\/?mml:[a-z][a-z0-9]+>|<br ?\/?>/gi
+
+function formatP6833Html (value) {
+  let oldValue
+
+  do {
+    oldValue = value
+    value = oldValue.replace(PATTERN_P6833_HTML, '$2').replace(PATTERN_P6833_HTML_2, '<$1>$2</$1>')
+  } while (value !== oldValue)
+
+  return value
+}
+
+function stripHtml (value) {
+  let oldValue
+
+  do {
+    oldValue = value
+    value = oldValue.replace(PATTERN_PLAIN_TEXT, '$2')
+  } while (value !== oldValue)
+
+  return value
+}
+
 function formatTitle (title) {
+  if (title.match(/&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-fA-F]{1,6});/ig) && !title.match(/[<>]/)) {
+    title = decodeHtmlEntities(title)
+  }
+
   return {
-    html: title.replace(/<(?!\/?(i|sub|sup)).+?>/g, '').replace(/\s+/g, ' '),
-    text: title.replace(/<.+?>/g, '').replace(/\s+/g, ' ')
+    html: formatP6833Html(title),
+    text: decodeHtmlEntities(stripHtml(title))
   }
 }
 
