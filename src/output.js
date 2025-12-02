@@ -146,6 +146,19 @@ function formatTitle (title) {
   }
 }
 
+function truncateTitle (title, limit) {
+  if (title.length <= limit) {
+    return title
+  }
+
+  let truncated = title.slice(0, limit - 1)
+  if (title[limit - 1] !== ' ') {
+    truncated = truncated.replace(/\s\S+$/, '')
+  }
+
+  return truncated + '…'
+}
+
 function serializeValue (property, value, item, caches) {
   switch (property) {
     case 'P304': // page
@@ -207,7 +220,7 @@ function serializeValue (property, value, item, caches) {
       return title.text === title.html ? command : [[command, 'P6833', `${language}:"${title.html}"`]]
     }
     case 'Lmul': // title
-      return `"${formatTitle(value).text}"`
+      return `"${truncateTitle(formatTitle(value).text, 250)}"`
 
     default: return `"${value}"`
   }
