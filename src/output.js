@@ -215,7 +215,7 @@ function serializeValue (property, value, item, caches) {
     case 'P1813': // title-short
     {
       const title = formatTitle(value)
-      const language = caches.languageWiki[item.language] || 'en'
+      const language = caches.languageWiki[item.language] || 'und'
       const command = `${language}:"${title.text}"`
       return title.text === title.html ? command : [[command, 'P6833', `${language}:"${title.html}"`]]
     }
