@@ -1,3 +1,16 @@
+# [0.6.0](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.5...v0.6.0) (2025-12-31)
+
+
+### Bug Fixes
+
+* handle HTML in titles better ([04c095e](https://github.com/citation-js/plugin-quickstatements/commit/04c095e6320e6b8468c042c155a8f6c1f5c43126))
+* replace P9767 with P393 ([4c2edd1](https://github.com/citation-js/plugin-quickstatements/commit/4c2edd140be2d00c40be6816c519745b9938fc10))
+* truncate item labels if title > 250 chars ([cbb26d6](https://github.com/citation-js/plugin-quickstatements/commit/cbb26d6ddb24f37a90a6f0ae77199129994ecf13))
+* use 'und' as default language if unspecified ([6b66b84](https://github.com/citation-js/plugin-quickstatements/commit/6b66b84a093ff0df7dab52c1e823100b3aeb9877))
+* use P9767 for non-software versions ([63bbac6](https://github.com/citation-js/plugin-quickstatements/commit/63bbac6cad3067b569f5e87e67517bad4b4d9fc8))
+
+
+
 ## [0.5.5](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.4...v0.5.5) (2025-05-14)
 
 
