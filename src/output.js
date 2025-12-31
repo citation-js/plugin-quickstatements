@@ -201,8 +201,18 @@ const mappings = [
   { source: 'ISBN', target: 'P212', when: { source: { type (type) { return type !== 'chapter' } } } },
   { source: 'page', target: 'P304', convert (value) { return value == null || value === '' ? null : convertString(value.replace('--', '-')) } },
   { source: 'version', target: 'P348', when: { source: { type: ['book', 'software', 'dataset'] } } },
-  { source: 'edition', target: 'P393' },
   { source: 'DOI', target: 'P356', convert (value) { return value == null || value === '' ? null : convertString(value.toUpperCase()) } },
+  {
+    source: 'version',
+    target: 'P393',
+    when: {
+      source: {
+        type (type) { return type !== 'book' && type !== 'software' && type !== 'dataset' },
+        edition: false
+      }
+    }
+  },
+  { source: 'edition', target: 'P393' },
   { source: 'language', target: 'P407', convert (value) { return this._caches.language[value] } },
   { source: 'issue', target: 'P433' },
   { source: 'volume', target: 'P478' },
@@ -213,17 +223,7 @@ const mappings = [
   { source: 'number-of-pages', target: 'P1104', convert (value) { return value } },
   { source: 'ISSN', target: 'P1433', convert (value) { return this._caches.issn[value] } },
   { source: 'title', target: 'P1476', convert: convertTitle },
-  { source: 'title-short', target: 'P1813', convert: convertTitle },
-  {
-    source: 'version',
-    target: 'P9767',
-    when: {
-      source: {
-        type (type) { return type !== 'book' && type !== 'software' && type !== 'dataset' },
-        edition: false
-      }
-    }
-  }
+  { source: 'title-short', target: 'P1813', convert: convertTitle }
 ]
 
 for (const mapping of mappings) {

@@ -94,10 +94,10 @@ const apiTests = [
 	LAST	Lmul	"Coarse decompositions of boundaries for CAT(0) groups"
 	LAST	P2093	"Dan Guralnik"	P1545	"1"
 	LAST	P356	"10.48550/ARXIV.MATH/0611006"
+	LAST	P393	"2"
 	LAST	P577	+2006-01-01T00:00:00Z/9
 	LAST	P856	"https://arxiv.org/abs/math/0611006"
 	LAST	P1476	und:"Coarse decompositions of boundaries for CAT(0) groups"
-	LAST	P9767	"2"
 `,
     /* eslint-enable no-tabs */
     input: require('./preprint.json')
