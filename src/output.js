@@ -1,31 +1,8 @@
 import { decode as decodeHtmlEntities } from 'html-entities'
+import { util } from '@citation-js/core'
 import { format as formatDate } from '@citation-js/date'
 import { format as formatName } from '@citation-js/name'
 import { fillCaches, getOrcid } from './cache.js'
-
-const WIKIDATA_PROPS = {
-  Lmul: 'title',
-  P50: 'author',
-  P212: 'ISBN',
-  P304: 'page',
-  P348: 'version',
-  P356: 'DOI',
-  P393: 'edition',
-  P407: 'language',
-  P433: 'issue',
-  P478: 'volume',
-  P577: 'issued',
-  P496: 'ORCID',
-  P698: 'PMID',
-  P856: 'URL',
-  P932: 'PMCID',
-  P1104: 'number-of-pages',
-  P1433: 'ISSN',
-  P1476: 'title',
-  P1813: 'title-short',
-  P2093: 'author',
-  P9767: 'version'
-}
 
 // the below mappings should follow the following Wikidata SPARQL query:
 //
@@ -159,72 +136,102 @@ function truncateTitle (title, limit) {
   return truncated + '…'
 }
 
-function serializeValue (property, value, item, caches) {
-  switch (property) {
-    case 'P304': // page
-      return `"${value.replace('--', '-')}"`
-    case 'P577': // issued
-      return formatDateForWikidata(value)
-    case 'P50': // author
-      return value.map((author, index) => {
-        const authorOrcid = getOrcid(author)
-        const authorQid = caches.orcid[authorOrcid]
-        if (!authorOrcid || !authorQid) {
-          return undefined
-        }
-
-        const parts = [authorQid, 'P1545', `"${index + 1}"`]
-        const name = formatName(author)
-        if (name) {
-          parts.push('P1932', `"${name}"`)
-        }
-        return parts
-      }).filter(Boolean)
-    case 'P2093': // author
-      return value.map((author, index) => {
-        const authorOrcid = getOrcid(author)
-        const authorQid = caches.orcid[authorOrcid]
-        const name = formatName(author)
-        if (!name || (authorOrcid && authorQid)) {
-          return undefined
-        }
-
-        const parts = [`"${name}"`, 'P1545', `"${index + 1}"`]
-        if (authorOrcid) {
-          parts.push('P496', `"${authorOrcid}"`)
-        }
-        return parts
-      }).filter(Boolean)
-    case 'P1433': // ISSN
-      return caches.issn[value]
-    case 'P356': // DOI
-      return `"${value.toUpperCase()}"`
-    case 'P212': // ISBN
-      return item.type === 'chapter' ? undefined : `"${value}"`
-    case 'P856': // URL
-      return item.type === 'article-journal' || item.type === 'chapter' ? undefined : `"${value}"`
-    case 'P348': // version
-      return item.type === 'book' || item.type === 'software' || item.type === 'dataset' ? `"${value}"` : undefined
-    case 'P9767': // version
-      return item.type === 'book' || item.type === 'software' || item.type === 'dataset' ? undefined : `"${value}"`
-    case 'P407': // language
-      return caches.language[value]
-    case 'P1104': // number-of-pages
-      return value
-    case 'P1476': // title
-    case 'P1813': // title-short
-    {
-      const title = formatTitle(value)
-      const language = caches.languageWiki[item.language] || 'und'
-      const command = `${language}:"${title.text}"`
-      return title.text === title.html ? command : [[command, 'P6833', `${language}:"${title.html}"`]]
-    }
-    case 'Lmul': // title
-      return `"${truncateTitle(formatTitle(value).text, 250)}"`
-
-    default: return `"${value}"`
-  }
+function convertString (value) {
+  return value == null || value === '' ? null : `"${value}"`
 }
+
+function convertTitle (value) {
+  if (value == null || value === '') {
+    return null
+  }
+
+  const title = formatTitle(value)
+  const language = this._caches.languageWiki[this.language] || 'und'
+  const command = `${language}:"${title.text}"`
+  return title.text === title.html ? command : [[command, 'P6833', `${language}:"${title.html}"`]]
+}
+
+const mappings = [
+  {
+    source: 'title',
+    target: 'Lmul',
+    convert (value) {
+      if (value == null || value === '') {
+        return null
+      }
+
+      return convertString(truncateTitle(formatTitle(value).text, 250))
+    }
+  },
+  {
+    source: 'author',
+    target: ['P50', 'P2093'],
+    convert (authors) {
+      if (authors == null) {
+        return null
+      }
+
+      const mapped = []
+      const unmapped = []
+
+      for (let index = 0; index < authors.length; index++) {
+        const author = authors[index]
+        const authorOrcid = getOrcid(author)
+        const authorQid = this._caches.orcid[authorOrcid]
+        const name = formatName(author)
+
+        if (authorQid) {
+          const parts = [authorQid, 'P1545', convertString(index + 1)]
+          if (name) {
+            parts.push('P1932', convertString(name))
+          }
+          mapped.push(parts)
+        } else if (name) {
+          const parts = [convertString(name), 'P1545', convertString(index + 1)]
+          if (authorOrcid) {
+            parts.push('P496', convertString(authorOrcid))
+          }
+          unmapped.push(parts)
+        }
+      }
+
+      return [mapped.length ? mapped : null, unmapped.length ? unmapped : null]
+    }
+  },
+  { source: 'ISBN', target: 'P212', when: { source: { type (type) { return type !== 'chapter' } } } },
+  { source: 'page', target: 'P304', convert (value) { return value == null || value === '' ? null : convertString(value.replace('--', '-')) } },
+  { source: 'version', target: 'P348', when: { source: { type: ['book', 'software', 'dataset'] } } },
+  { source: 'edition', target: 'P393' },
+  { source: 'DOI', target: 'P356', convert (value) { return value == null || value === '' ? null : convertString(value.toUpperCase()) } },
+  { source: 'language', target: 'P407', convert (value) { return this._caches.language[value] } },
+  { source: 'issue', target: 'P433' },
+  { source: 'volume', target: 'P478' },
+  { source: 'issued', target: 'P577', convert (value) { return value == null ? null : formatDateForWikidata(value) } },
+  { source: 'PMID', target: 'P698' },
+  { source: 'URL', target: 'P856', when: { source: { type (type) { return type !== 'article-journal' && type !== 'chapter' } } } },
+  { source: 'PMCID', target: 'P932' },
+  { source: 'number-of-pages', target: 'P1104', convert (value) { return value } },
+  { source: 'ISSN', target: 'P1433', convert (value) { return this._caches.issn[value] } },
+  { source: 'title', target: 'P1476', convert: convertTitle },
+  { source: 'title-short', target: 'P1813', convert: convertTitle },
+  {
+    source: 'version',
+    target: 'P9767',
+    when: {
+      source: {
+        type (type) { return type !== 'book' && type !== 'software' && type !== 'dataset' },
+        edition: false
+      }
+    }
+  }
+]
+
+for (const mapping of mappings) {
+  const toTarget = mapping.convert ?? convertString
+  mapping.convert = { toTarget }
+}
+
+const converter = new util.Translator(mappings)
 
 function getProvenance (item) {
   const provenance = []
@@ -237,7 +244,7 @@ function getProvenance (item) {
 
   if (provenance.length) {
     if (item._graph && item._graph[0] && item._graph[0].type === '@pubmed/pmcid' && item.PMCID) {
-      provenance.push(['S932', `"${item.PMCID}"`])
+      provenance.push(['S932', convertString(item.PMCID)])
     }
 
     if (item.accessed) {
@@ -286,12 +293,9 @@ export default {
         provenance: getProvenance(item)
       }
 
-      for (const wikidataProp in WIKIDATA_PROPS) {
-        const cslProp = WIKIDATA_PROPS[wikidataProp]
-        const cslValue = item[cslProp]
-        if (cslValue == null || cslValue === '') { continue }
-
-        const wikidataValue = serializeValue(wikidataProp, cslValue, item, caches)
+      const converted = converter.convertToTarget({ ...item, _caches: caches })
+      for (const wikidataProp in converted) {
+        const wikidataValue = converted[wikidataProp]
         if (wikidataValue == null) { continue }
 
         entry.commands.push(...[]

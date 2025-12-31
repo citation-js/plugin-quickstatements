@@ -44,11 +44,11 @@ const apiTests = [
     output: `	CREATE
 	LAST	P31	Q386724	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	Lmul	"Biological pathway abstractions"
+	LAST	P2093	"Andra Sachinder Waagmeester"	P1545	"1"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	P212	"9789464733617"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	P356	"10.26481/DIS.20240116AW"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	P856	"http://dx.doi.org/10.26481/dis.20240116aw"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	P1476	und:"Biological pathway abstractions"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
-	LAST	P2093	"Andra Sachinder Waagmeester"	P1545	"1"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
     input: require('./thesis.json')
@@ -76,12 +76,12 @@ const apiTests = [
     output: `	CREATE
 	LAST	P31	Q3331189
 	LAST	Lmul	"70歳のウィキペディアン"
+	LAST	P2093	"門倉百合子"	P1545	"1"
 	LAST	P212	"9784907126612"
 	LAST	P407	Q5287
 	LAST	P577	+2023-11-03T00:00:00Z/11
 	LAST	P856	"https://books.google.com/books/about/70%E6%AD%B3%E3%81%AE%E3%82%A6%E3%82%A3%E3%82%AD%E3%83%9A%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3.html?hl=&id=aD9V0AEACAAJ"
 	LAST	P1476	ja:"70歳のウィキペディアン"
-	LAST	P2093	"門倉百合子"	P1545	"1"
 `,
     /* eslint-enable no-tabs */
     input: require('./japanese.json')
@@ -92,11 +92,11 @@ const apiTests = [
     output: `	CREATE
 	LAST	P31	Q191067
 	LAST	Lmul	"Coarse decompositions of boundaries for CAT(0) groups"
+	LAST	P2093	"Dan Guralnik"	P1545	"1"
 	LAST	P356	"10.48550/ARXIV.MATH/0611006"
 	LAST	P577	+2006-01-01T00:00:00Z/9
 	LAST	P856	"https://arxiv.org/abs/math/0611006"
 	LAST	P1476	und:"Coarse decompositions of boundaries for CAT(0) groups"
-	LAST	P2093	"Dan Guralnik"	P1545	"1"
 	LAST	P9767	"2"
 `,
     /* eslint-enable no-tabs */
@@ -108,12 +108,12 @@ const apiTests = [
     output: `	CREATE
 	LAST	P31	Q386724	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	Lmul	"Brad Patterson, Tom Brooking, and Jim McAloon, Unpacking the Kist: The Scots in New Zealand. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."
+	LAST	P2093	"Seán Gerard Brosnahan"	P1545	"1"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	P356	"10.21083/IRSS.V39I0.2977"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	P478	"39"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	P577	+2014-11-03T00:00:00Z/11	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	P856	"http://dx.doi.org/10.21083/irss.v39i0.2977"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 	LAST	P1476	und:"Brad Patterson, Tom Brooking, and Jim McAloon, Unpacking the Kist: The Scots in New Zealand. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."	P6833	und:"Brad Patterson, Tom Brooking, and Jim McAloon, <i>Unpacking the Kist: The Scots in New Zealand</i>. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
-	LAST	P2093	"Seán Gerard Brosnahan"	P1545	"1"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
     input: require('./html-2.json')
