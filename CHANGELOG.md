@@ -1,3 +1,11 @@
+# [0.7.0](https://github.com/citation-js/plugin-quickstatements/compare/v0.6.0...v0.7.0) (2026-09-22)
+
+* chore!: update to Node.js v22 ([05fa92d](https://github.com/citation-js/plugin-quickstatements/commit/05fa92d8716880187b2431974063ab0b44fb2fdc))
+
+### BREAKING CHANGES
+
+* drop support for Node.js v16, v18, v20
+
 # [0.6.0](https://github.com/citation-js/plugin-quickstatements/compare/v0.5.5...v0.6.0) (2025-12-31)
 
 

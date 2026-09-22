@@ -1,6 +1,6 @@
 {
   "name": "@citation-js/plugin-quickstatements",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "type": "module",
   "description": "Plugin that takes citation-js input and output QuickStatements.",
   "main": "lib/index.js",
