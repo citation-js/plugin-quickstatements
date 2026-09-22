@@ -1,4 +1,6 @@
 import assert from 'node:assert'
+import { promises as fs } from 'node:fs'
+import path from 'node:path'
 import { describe, it } from 'node:test'
 import { plugins } from '@citation-js/core'
 import '../src/index.js'
@@ -12,6 +14,11 @@ global.Date = class extends oldDate {
       super('2019-09-28T00:00:00Z')
     }
   }
+}
+
+async function readFile (file) {
+  const text = await fs.readFile(path.join(import.meta.dirname, file), 'utf8')
+  return JSON.parse(text)
 }
 
 const apiTests = [
@@ -34,7 +41,7 @@ const apiTests = [
 	LAST	P1476	en:"A general approach for retrosynthetic molecular core analysis"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
-    input: await import('./data.json', { with: { type: 'json' } }).then(module => module.default)
+    input: await readFile('./data.json')
   },
   {
     name: 'invalid type (thesis/dissertation)',
@@ -49,7 +56,7 @@ const apiTests = [
 	LAST	P1476	und:"Biological pathway abstractions"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
-    input: await import('./thesis.json', { with: { type: 'json' } }).then(module => module.default)
+    input: await readFile('./thesis.json')
   },
   {
     name: 'HTML in title',
@@ -66,7 +73,7 @@ const apiTests = [
 	LAST	P1476	en:"Mapping wing morphs of Tetrix subulata using citizen science data: Flightless groundhoppers are more prevalent in grasslands near water"	P6833	en:"Mapping wing morphs of <i>Tetrix subulata</i> using citizen science data: Flightless groundhoppers are more prevalent in grasslands near water"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
-    input: await import('./html.json', { with: { type: 'json' } }).then(module => module.default)
+    input: await readFile('./html.json')
   },
   {
     name: 'Japanese title',
@@ -82,7 +89,7 @@ const apiTests = [
 	LAST	P1476	ja:"70歳のウィキペディアン"
 `,
     /* eslint-enable no-tabs */
-    input: await import('./japanese.json', { with: { type: 'json' } }).then(module => module.default)
+    input: await readFile('./japanese.json')
   },
   {
     name: 'Versioned preprint',
@@ -98,7 +105,7 @@ const apiTests = [
 	LAST	P1476	und:"Coarse decompositions of boundaries for CAT(0) groups"
 `,
     /* eslint-enable no-tabs */
-    input: await import('./preprint.json', { with: { type: 'json' } }).then(module => module.default)
+    input: await readFile('./preprint.json')
   },
   {
     name: 'HTML (2)',
@@ -114,7 +121,7 @@ const apiTests = [
 	LAST	P1476	und:"Brad Patterson, Tom Brooking, and Jim McAloon, Unpacking the Kist: The Scots in New Zealand. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."	P6833	und:"Brad Patterson, Tom Brooking, and Jim McAloon, <i>Unpacking the Kist: The Scots in New Zealand</i>. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
-    input: await import('./html-2.json', { with: { type: 'json' } }).then(module => module.default)
+    input: await readFile('./html-2.json')
   }
 ]
 
