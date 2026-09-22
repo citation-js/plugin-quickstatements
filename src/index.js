@@ -1,7 +1,7 @@
 import { plugins } from '@citation-js/core'
 
 // Loads plugin definitions
-import output from './output'
+import output from './output.js'
 
 // Define plugin name (this is how it is referenced in the code)
 const ref = '@quickstatements'

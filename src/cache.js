@@ -1,5 +1,6 @@
 import { logger, util } from '@citation-js/core'
-import wdk from 'wikidata-sdk'
+import { simplifySparqlResults } from 'wikibase-sdk'
+import wdk from 'wikibase-sdk/wikidata.org'
 
 const QUERY_BUILDERS = {
   issn: {
@@ -49,7 +50,7 @@ export function fillCaches (csl) {
   try {
     const url = wdk.sparqlQuery(query)
     const response = JSON.parse(util.fetchFile(url))
-    const results = wdk.simplify.sparqlResults(response)
+    const results = simplifySparqlResults(response)
 
     for (const { key, value, cache } of results) {
       caches[cache][key] = value

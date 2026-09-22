@@ -7,6 +7,11 @@ to [Wikidata QuickStatements](https://quickstatements.toolforge.org/). Some impo
 1. it does *not* (currently) check if the information is already in Wikidata
 2. it only supports journals articles (at this moment)
 
+[![NPM version](https://img.shields.io/npm/v/@citation-js/plugin-quickstatements.svg)](https://npmjs.org/package/@citation-js/plugin-quickstatements)
+[![Codecov](https://img.shields.io/codecov/c/gh/citation-js/plugin-quickstatements)](https://app.codecov.io/gh/citation-js/plugin-quickstatements)
+[![NPM total downloads](https://img.shields.io/npm/dt/@citation-js/plugin-quickstatements.svg)](https://npmcharts.com/compare/@citation-js%2Fplugin-quickstatements?minimal=true)
+![License](https://img.shields.io/npm/l/@citation-js/plugin-quickstatements.svg)
+
 
 ## Install
 
@@ -24,7 +29,11 @@ npm install @citation-js/core @citation-js/plugin-pubmed @citation-js/plugin-doi
 
 ## Use
 
-Install the plugin by `require`-ing it:
+```js
+import '@citation-js/plugin-quickstatements'
+```
+
+Or install the plugin by `require`-ing it:
 
 ```js
 require('@citation-js/plugin-quickstatements')
@@ -96,7 +105,7 @@ looks like:
 	LAST	P932	"PMC6613236"
 	LAST	P1476	"Journal of Cheminformatics, ORCID, and GitHub"
 	LAST	P577	"2019-07-08"
-	LAST	P2093	"Egon Willighagen"	P1545	"1"	
-	LAST	P2093	"Nina Jeliazkova"	P1545	"2"	
+	LAST	P2093	"Egon Willighagen"	P1545	"1"
+	LAST	P2093	"Nina Jeliazkova"	P1545	"2"
 	LAST	P2093	"Rajarshi Guha"	P1545	"3"
 ```

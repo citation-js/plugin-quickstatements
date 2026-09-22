@@ -8,7 +8,7 @@ Run tests with the following:
 
 Or a specific test:
 
-    npm test -- --grep "TEST_NAME"
+    npm test -- --test-name-pattern="TEST_NAME"
 
 ### Adding tests
 

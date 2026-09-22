@@ -1,18 +1,19 @@
 {
   "name": "@citation-js/plugin-quickstatements",
   "version": "0.6.0",
+  "type": "module",
   "description": "Plugin that takes citation-js input and output QuickStatements.",
   "main": "lib/index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "test": "mocha -r @babel/register -R spec test/suite.js",
-    "babel": "babel src -d lib --copy-files",
+    "test": "node --test --test-reporter spec test/suite.js",
     "lint": "standard \"src/**/*.js\" \"test/**/*.js\"",
-    "coverage": "NODE_ENV=test nyc npm test",
-    "report": "nyc report --reporter=lcov > coverage.lcov",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
-    "prepublishOnly": "npm run babel",
-    "version": "npm run changelog",
-    "preversion": "npm run lint && npm run test"
+    "type-check": "tsc --noEmit test/types.ts",
+    "changelog": "conventional-changelog -p angular && git add CHANGELOG.md",
+    "coverage": "c8 npm test",
+    "report": "c8 report --reporter=lcov",
+    "preversion": "npm run lint && npm run type-check && npm run test",
+    "version": "npm run changelog"
   },
   "repository": {
     "type": "git",
@@ -30,44 +31,30 @@
   },
   "homepage": "https://github.com/citation-js/plugin-quickstatements#readme",
   "engines": {
-    "node": ">=14"
+    "node": ">=22.12.0"
   },
   "files": [
-    "/lib"
+    "/src",
+    "/index.d.ts"
   ],
-  "nyc": {
-    "include": [
-      "src/**/*.js"
-    ],
-    "sourceMap": false,
-    "instrument": false
-  },
-  "standard": {
-    "parser": "@babel/eslint-parser"
-  },
   "dependencies": {
     "@citation-js/date": "^0.5.0",
     "@citation-js/name": "^0.4.2",
     "html-entities": "^2.6.0",
-    "wikidata-sdk": "^8.0.0"
+    "wikibase-sdk": "^11.6.5"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.7",
-    "@babel/core": "^7.7.7",
-    "@babel/eslint-parser": "^7.14.3",
-    "@babel/preset-env": "^7.7.7",
-    "@babel/register": "^7.7.7",
-    "@citation-js/core": "^0.6.1",
-    "@citation-js/plugin-doi": "^0.6.1",
-    "@citation-js/plugin-isbn": "^0.3.0",
-    "@citation-js/plugin-pubmed": "^0.2.0",
-    "babel-plugin-istanbul": "^6.0.0",
-    "conventional-changelog-cli": "^2.1.1",
-    "mocha": "^10.0.0",
-    "nyc": "^15.1.0",
-    "standard": "^17.0.0"
+    "@citation-js/core": "^0.9.0",
+    "@citation-js/plugin-doi": "^0.9.0",
+    "@citation-js/plugin-isbn": "^0.5.0",
+    "@citation-js/plugin-pubmed": "^0.4.0",
+    "c8": "^12.0.0",
+    "conventional-changelog": "^8.1.3",
+    "conventional-changelog-angular": "^9.4.0",
+    "standard": "^17.0.0",
+    "typescript": "^7.0.2"
   },
   "peerDependencies": {
-    "@citation-js/core": ">=0.6.0 <0.8"
+    "@citation-js/core": ">=0.6.0 <1.0"
   }
 }

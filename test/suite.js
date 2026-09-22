@@ -1,9 +1,7 @@
-/* eslint-env mocha */
-
-import '../src/'
-
-import assert from 'assert'
+import assert from 'node:assert'
+import { describe, it } from 'node:test'
 import { plugins } from '@citation-js/core'
+import '../src/index.js'
 
 const oldDate = global.Date
 global.Date = class extends oldDate {
@@ -36,7 +34,7 @@ const apiTests = [
 	LAST	P1476	en:"A general approach for retrosynthetic molecular core analysis"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
-    input: require('./data.json')
+    input: await import('./data.json', { with: { type: 'json' } }).then(module => module.default)
   },
   {
     name: 'invalid type (thesis/dissertation)',
@@ -51,7 +49,7 @@ const apiTests = [
 	LAST	P1476	und:"Biological pathway abstractions"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
-    input: require('./thesis.json')
+    input: await import('./thesis.json', { with: { type: 'json' } }).then(module => module.default)
   },
   {
     name: 'HTML in title',
@@ -68,7 +66,7 @@ const apiTests = [
 	LAST	P1476	en:"Mapping wing morphs of Tetrix subulata using citizen science data: Flightless groundhoppers are more prevalent in grasslands near water"	P6833	en:"Mapping wing morphs of <i>Tetrix subulata</i> using citizen science data: Flightless groundhoppers are more prevalent in grasslands near water"	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
-    input: require('./html.json')
+    input: await import('./html.json', { with: { type: 'json' } }).then(module => module.default)
   },
   {
     name: 'Japanese title',
@@ -84,7 +82,7 @@ const apiTests = [
 	LAST	P1476	ja:"70歳のウィキペディアン"
 `,
     /* eslint-enable no-tabs */
-    input: require('./japanese.json')
+    input: await import('./japanese.json', { with: { type: 'json' } }).then(module => module.default)
   },
   {
     name: 'Versioned preprint',
@@ -100,7 +98,7 @@ const apiTests = [
 	LAST	P1476	und:"Coarse decompositions of boundaries for CAT(0) groups"
 `,
     /* eslint-enable no-tabs */
-    input: require('./preprint.json')
+    input: await import('./preprint.json', { with: { type: 'json' } }).then(module => module.default)
   },
   {
     name: 'HTML (2)',
@@ -116,7 +114,7 @@ const apiTests = [
 	LAST	P1476	und:"Brad Patterson, Tom Brooking, and Jim McAloon, Unpacking the Kist: The Scots in New Zealand. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."	P6833	und:"Brad Patterson, Tom Brooking, and Jim McAloon, <i>Unpacking the Kist: The Scots in New Zealand</i>. McGill-Queen's Studies in Ethnic History Series, No. 2.33. Montreal: McGill-Queen’s University Press, 2013. Pp. 412. ISBN 978-0-7735-4190-0. CAD $100.00."	S248	Q5188229	S813	+2019-09-28T00:00:00Z/11
 `,
     /* eslint-enable no-tabs */
-    input: require('./html-2.json')
+    input: await import('./html-2.json', { with: { type: 'json' } }).then(module => module.default)
   }
 ]
 
